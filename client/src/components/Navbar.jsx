@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { FaBarsStaggered, FaXmark } from "react-icons/fa6";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
+  const { currentUser } = useSelector((state) => state.user);
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleMenuToggle = () => {
@@ -55,14 +58,18 @@ const Navbar = () => {
 
         {/* Sign up and login button */}
         <div className="text-base tetx-primary font-medium space-x-5 hidden lg:block">
-          <Link to="/login" className="py-2 px-5 border rounded">
-            Log in
-          </Link>
-          <Link
-            className="py-2 px-5 border rounded bg-blue text-white"
-            to="/sign-up"
-          >
-            Sign up
+          <Link to="/profile">
+            {currentUser ? (
+              <img
+                className="rounded-full h-10 w-10 object-cover"
+                src={currentUser.avatar}
+                alt="User Avatar"
+              />
+            ) : (
+              <span className="bg-blue  text-white py-2 px-5 border rounded">
+                Sign in
+              </span>
+            )}
           </Link>
         </div>
 
@@ -79,10 +86,17 @@ const Navbar = () => {
       </nav>
 
       {/* Navitems for mobile */}
-      <div className={`px-4 bg-black py-5 rounded-sm ${isMenuOpen ? "":"hidden"}`}>
-        <ul >
+      <div
+        className={`px-4  py-5 rounded-sm ${
+          isMenuOpen ? "" : "hidden"
+        }`}
+      >
+        <ul>
           {navItems.map(({ path, title }) => (
-            <li key={path} className="text-base text-white first:text-white py-1">
+            <li
+              key={path}
+              className="text-base py-1"
+            >
               <NavLink
                 to={path}
                 className={({ isActive }) => (isActive ? "active" : "")}
@@ -92,9 +106,21 @@ const Navbar = () => {
             </li>
           ))}
 
-          <li className="text-white py-1"><Link to="/login" >
-            Log in
-          </Link></li>
+          <li className=" py-1">
+          <Link to="/profile">
+            {currentUser ? (
+              <img
+                className="rounded-full h-10 w-10 object-cover"
+                src={currentUser.avatar}
+                alt="User Avatar"
+              />
+            ) : (
+              <span className="text-base py-1">
+                Sign in
+              </span>
+            )}
+          </Link>
+          </li>
         </ul>
       </div>
     </header>

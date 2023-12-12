@@ -5,8 +5,12 @@ import CreateJob from "../Pages/CreateJob";
 import MyJobs from "../Pages/MyJobs";
 import SalaryPage from "../Pages/SalaryPage";
 import UpdateJob from "../Pages/UpdateJob";
-import Login from "../Pages/Login";
+import Signin from "../Pages/Signin";
+import Signup from "../Pages/Signup";
+import PrivateRoute from "../components/PrivateRoute";
+
 import JobDetails from "../Pages/JobDetails";
+import Profile from "../Pages/Profile";
 
 const router = createBrowserRouter([
   {
@@ -17,35 +21,48 @@ const router = createBrowserRouter([
         path: "/",
         element: <Home />,
       },
-      {
-        path: "/post-job",
-        element: <CreateJob />,
-      },
 
-      {
-        path: "/my-job",
-        element: <MyJobs />,
-      },
       {
         path: "/salary",
         element: <SalaryPage />,
       },
-      {
-        path: "/edit-job/:id",
-        element: <UpdateJob />,
-        loader: ({ params }) =>
-          fetch(`/api/all-jobs/${params.id}`),
-      },
+
       {
         path: "/job/:id",
         element: <JobDetails />,
-       
+      },
+      {
+        path: "/sign-in",
+        element: <Signin />,
+      },
+      {
+        path: "/sign-up",
+        element: <Signup />,
+      },
+      {
+        path: "/",
+        element: <PrivateRoute />,
+        children: [
+          {
+            path: "/profile",
+            element: <Profile />,
+          },
+          {
+            path: "/post-job",
+            element: <CreateJob />,
+          },
+          {
+            path: "/edit-job/:id",
+            element: <UpdateJob />,
+            loader: ({ params }) => fetch(`/api/job/all-jobs/${params.id}`),
+          },
+          {
+            path: "/my-job",
+            element: <MyJobs />,
+          },
+        ],
       },
     ],
-  },
-  {
-    path: "/login",
-    element: <Login />,
   },
 ]);
 

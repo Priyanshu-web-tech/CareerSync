@@ -16,7 +16,7 @@ const Home = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    fetch("/api/all-jobs")
+    fetch("/api/job/all-jobs")
       .then((res) => res.json())
       .then((data) => {
         setJobs(data);

@@ -31,28 +31,28 @@ function Salary({ handleChange, handleClick }) {
           handleChange={handleChange}
           value={30}
           title="< 30000k"
-          name="test2"
+          name="test"
         />
 
         <InputField
           handleChange={handleChange}
           value={50}
           title="< 50000k"
-          name="test2"
+          name="test"
         />
 
         <InputField
           handleChange={handleChange}
           value={80}
           title="< 80000k"
-          name="test2"
+          name="test"
         />
 
         <InputField
           handleChange={handleChange}
           value={100}
           title="< 100000k"
-          name="test2"
+          name="test"
         />
       </div>
     </div>

@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
+import { useSelector } from "react-redux";
+
 
 
 const MyJobs = () => {
   const [jobs, setJobs] = useState([]);
   const [searchText, setSearchText] = useState("");
+  const { currentUser } = useSelector((state) => state.user);
+
 
   const [isloading, setIsLoading] = useState(true);
 
@@ -16,7 +20,7 @@ const MyJobs = () => {
   useEffect(() => {
     setIsLoading(true);
 
-    fetch("/api/myJobs/p@gmail.com")
+    fetch(`/api/job/myJobs/${currentUser.email}`)
       .then((res) => res.json())
       .then((data) => {
         setJobs(data);
@@ -50,7 +54,7 @@ const MyJobs = () => {
     setIsLoading(false);
   };
   const handleDelete = (id) => {
-    fetch(`/api/job/${id}`, {
+    fetch(`/api/job/delete/${id}`, {
       method: "DELETE",
     })
       .then((res) => res.json())

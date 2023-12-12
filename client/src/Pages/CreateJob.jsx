@@ -1,22 +1,22 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import CreatableSelect from "react-select/creatable";
-import Swal from 'sweetalert2'
-
+import Swal from "sweetalert2";
 
 function CreateJob() {
   const [selectedOption, setSelectedOption] = useState(null);
 
   const {
     register,
-    handleSubmit,reset,
+    handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
 
   const onSubmit = (data) => {
-    data.skills=selectedOption;
+    data.skills = selectedOption;
     console.log(data);
-    fetch("/api/post-job", {
+    fetch("/api/job/post-job", {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify(data),
@@ -24,10 +24,10 @@ function CreateJob() {
       .then((res) => res.json())
       .then((result) => {
         console.log(result);
-        if(result.acknowledged === true){
+        if (result.acknowledged === true) {
           Swal.fire(`Job Created successfullly`);
         }
-        reset()
+        reset();
       });
   };
 
@@ -53,6 +53,7 @@ function CreateJob() {
             <div className="lg:w-1/2 w-full">
               <label className="block mb-2 text-lg">Job Title</label>
               <input
+                required
                 type="text"
                 defaultValue={"Web Developer"}
                 {...register("jobTitle")}
@@ -62,6 +63,7 @@ function CreateJob() {
             <div className="lg:w-1/2 w-full">
               <label className="block mb-2 text-lg">Company Name</label>
               <input
+                required
                 type="text"
                 placeholder="Ex: Microsoft"
                 {...register("companyName")}
@@ -75,6 +77,7 @@ function CreateJob() {
             <div className="lg:w-1/2 w-full">
               <label className="block mb-2 text-lg">Minimum Salary</label>
               <input
+                required
                 type="text"
                 placeholder="$20k"
                 {...register("minPrice")}
@@ -84,6 +87,7 @@ function CreateJob() {
             <div className="lg:w-1/2 w-full">
               <label className="block mb-2 text-lg">Maximum Salary</label>
               <input
+                required
                 type="text"
                 placeholder="$120k"
                 {...register("maxPrice")}
@@ -96,7 +100,11 @@ function CreateJob() {
           <div className="create-job-flex">
             <div className="lg:w-1/2 w-full">
               <label className="block mb-2 text-lg">Salary Type</label>
-              <select {...register("salaryType")} className="create-job-input">
+              <select
+                required
+                {...register("salaryType")}
+                className="create-job-input"
+              >
                 <option value="">Choose your salary </option>
                 <option value="Hourly">Hourly</option>
                 <option value="Monthly">Monthly</option>
@@ -106,6 +114,7 @@ function CreateJob() {
             <div className="lg:w-1/2 w-full">
               <label className="block mb-2 text-lg">Job Location</label>
               <input
+                required
                 type="text"
                 placeholder="Ex: London"
                 {...register("jobLocation")}
@@ -119,6 +128,7 @@ function CreateJob() {
             <div className="lg:w-1/2 w-full">
               <label className="block mb-2 text-lg">Job Posting Date</label>
               <input
+                required
                 type="date"
                 placeholder="Ex: 2023-11-03"
                 {...register("postingDate")}
@@ -128,6 +138,7 @@ function CreateJob() {
             <div className="lg:w-1/2 w-full">
               <label className="block mb-2 text-lg">Experience Level</label>
               <select
+                required
                 {...register("experienceLevel")}
                 className="create-job-input"
               >
@@ -150,6 +161,7 @@ function CreateJob() {
               options={options}
               isMulti
               className="create-job-input py-4"
+              required
             />
           </div>
 
@@ -158,6 +170,7 @@ function CreateJob() {
             <div className="lg:w-1/2 w-full">
               <label className="block mb-2 text-lg">Company Logo</label>
               <input
+                required
                 type="url"
                 placeholder="Paste your compnay logo URL"
                 {...register("companyLogo")}
@@ -167,6 +180,7 @@ function CreateJob() {
             <div className="lg:w-1/2 w-full">
               <label className="block mb-2 text-lg">Experience Type</label>
               <select
+                required
                 {...register("employmentType")}
                 className="create-job-input"
               >
@@ -184,6 +198,7 @@ function CreateJob() {
             <label className="block mb-2 text-lg">Job Description</label>
 
             <textarea
+              required
               className="w-full pl-3 py-1.5 focus:outline-none placeholder:text-gray-600"
               rows={6}
               placeholder="Job Description"
@@ -196,6 +211,7 @@ function CreateJob() {
             <label className="block mb-2 text-lg">Job Posted By</label>
 
             <input
+              required
               type="email"
               placeholder="your email"
               {...register("postedBy")}
@@ -203,6 +219,7 @@ function CreateJob() {
             />
           </div>
           <input
+            required
             className="block mt-12 bg-blue text-white font-semibold px-8 py-2 rounded-sm cursor-pointer"
             type="submit"
           />
