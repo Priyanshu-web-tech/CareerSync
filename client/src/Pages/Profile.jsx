@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import { useRef, useState, useEffect } from "react";
 import Swal from "sweetalert2";
+import { MdModeEditOutline } from "react-icons/md";
 
 import {
   getDownloadURL,
@@ -91,23 +92,48 @@ export default function Profile() {
     }
   };
 
-  const handleDeleteUser = async () => {
-    try {
-      dispatch(deleteUserStart());
-      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
-        method: "DELETE",
-      });
-      const data = await res.json();
-      if (data.success === false) {
-        dispatch(deleteUserFailure(data.message));
-        return;
+  const handleDeleteUser = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You will not be able to recover this account!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          dispatch(deleteUserStart());
+          const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+            method: "DELETE",
+          });
+          const data = await res.json();
+          if (data.success === false) {
+            dispatch(deleteUserFailure(data.message));
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: data.message,
+            });
+            return;
+          }
+          dispatch(deleteUserSuccess(data));
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: "User deleted successfully!",
+          });
+        } catch (error) {
+          dispatch(deleteUserFailure(error.message));
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Error in deleting user",
+          });
+        }
       }
-      dispatch(deleteUserSuccess(data));
-      Swal.fire(`User Deleted successfullly`);
-    } catch (error) {
-      dispatch(deleteUserFailure(error.message));
-      Swal.fire(`Error in Deleting successfullly`);
-    }
+    });
   };
 
   const handleSignOut = async () => {
@@ -128,29 +154,38 @@ export default function Profile() {
   return (
     <div className="p-3 max-w-lg mx-auto">
       <h1 className="text-3xl font-semibold text-center my-7">Profile</h1>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <input
-          onChange={(e) => setFile(e.target.files[0])}
-          type="file"
-          ref={fileRef}
-          hidden
-          accept="image/*"
-        />
-        <img
-          onClick={() => fileRef.current.click()}
-          src={formData.avatar || currentUser.avatar}
-          alt="profile"
-          className="rounded-full h-24 w-24 object-cover cursor-pointer self-center mt-2"
-        />
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col gap-4 items-center"
+      >
+        <div className="relative">
+          <input
+            onChange={(e) => setFile(e.target.files[0])}
+            type="file"
+            ref={fileRef}
+            hidden
+            accept="image/*"
+          />
+          <img
+            onClick={() => fileRef.current.click()}
+            src={formData.avatar || currentUser.avatar}
+            alt="profile"
+            className="rounded-full h-24 w-24 object-cover cursor-pointer border-4 "
+          />
+          <label className="absolute bottom-0 right-0 rounded-full bg-teal-700 text-white px-2 py-1 cursor-pointer">
+          <MdModeEditOutline />
+          </label>
+        </div>
+
         <p className="text-sm self-center">
           {fileUploadError ? (
-            <span className="text-red-700">
+            <span className="text-slate-500">
               Error Image upload (image must be less than 2 mb)
             </span>
           ) : filePerc > 0 && filePerc < 100 ? (
-            <span className="text-indigo-700">{`Uploading ${filePerc}%`}</span>
+            <span className="text-teal-700">{`Uploading ${filePerc}%`}</span>
           ) : filePerc === 100 ? (
-            <span className="text-purple-700">
+            <span className="text-teal-700">
               Image successfully uploaded!
             </span>
           ) : (
@@ -162,7 +197,7 @@ export default function Profile() {
           placeholder="username"
           defaultValue={currentUser.username}
           id="username"
-          className="border p-3 rounded-lg"
+          className="border p-3 rounded-lg w-full"
           onChange={handleChange}
         />
         <input
@@ -170,7 +205,7 @@ export default function Profile() {
           placeholder="email"
           id="email"
           defaultValue={currentUser.email}
-          className="border p-3 rounded-lg"
+          className="border p-3 rounded-lg w-full"
           onChange={handleChange}
         />
         <input
@@ -178,28 +213,33 @@ export default function Profile() {
           placeholder="password"
           onChange={handleChange}
           id="password"
-          className="border p-3 rounded-lg"
+          className="border p-3 rounded-lg w-full"
         />
         <button
           disabled={loading}
-          className="bg-indigo-700 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80"
+          className="bg-teal-700 w-full text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80"
         >
           {loading ? "Loading..." : "Update"}
         </button>
       </form>
-      <div className="flex justify-between mt-5">
-        <span
+
+      <div className="flex flex-col gap-3 mt-5">
+        <button
           onClick={handleDeleteUser}
-          className="text-red-700 cursor-pointer"
+          className="bg-slate-500 text-white rounded-lg py-3 uppercase hover:opacity-95"
         >
-          Delete account
-        </span>
-        <span onClick={handleSignOut} className="text-red-700 cursor-pointer">
-          Sign out
-        </span>
+          Delete Account
+        </button>
+        <button
+          onClick={handleSignOut}
+          className="bg-slate-500 text-white rounded-lg py-3 uppercase hover:opacity-95"
+        >
+          Sign Out
+        </button>
       </div>
 
-      <p className="text-red-700 mt-5">{error ? error : ""}</p>
+      {/* Display error messages */}
+      <p className="text-slate-500 mt-5">{error ? error : ""}</p>
     </div>
   );
 }

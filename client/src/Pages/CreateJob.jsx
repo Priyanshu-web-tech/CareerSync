@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import CreatableSelect from "react-select/creatable";
 import Swal from "sweetalert2";
+import { useSelector } from "react-redux";
 
 function CreateJob() {
   const [selectedOption, setSelectedOption] = useState(null);
+  const { currentUser } = useSelector((state) => state.user);
 
   const {
     register,
@@ -15,6 +17,7 @@ function CreateJob() {
 
   const onSubmit = (data) => {
     data.skills = selectedOption;
+    data.postedBy = currentUser.email;
     console.log(data);
     fetch("/api/job/post-job", {
       method: "POST",
@@ -126,14 +129,18 @@ function CreateJob() {
           {/* 4th row */}
           <div className="create-job-flex">
             <div className="lg:w-1/2 w-full">
-              <label className="block mb-2 text-lg">Job Posting Date</label>
-              <input
+              <label className="block mb-2 text-lg">Experience Type</label>
+              <select
                 required
-                type="date"
-                placeholder="Ex: 2023-11-03"
-                {...register("postingDate")}
+                {...register("employmentType")}
                 className="create-job-input"
-              />
+              >
+                <option value="">Choose your experience </option>
+                <option value="Full-time">Full-time</option>
+                <option value="Part-time">Part-time</option>
+                <option value="Temporary">Temporary</option>
+                <option value="Work remotely">Work remotely</option>
+              </select>
             </div>
             <div className="lg:w-1/2 w-full">
               <label className="block mb-2 text-lg">Experience Level</label>
@@ -167,7 +174,7 @@ function CreateJob() {
 
           {/* 6th row */}
           <div className="create-job-flex">
-            <div className="lg:w-1/2 w-full">
+            <div className="w-full">
               <label className="block mb-2 text-lg">Company Logo</label>
               <input
                 required
@@ -176,20 +183,6 @@ function CreateJob() {
                 {...register("companyLogo")}
                 className="create-job-input"
               />
-            </div>
-            <div className="lg:w-1/2 w-full">
-              <label className="block mb-2 text-lg">Experience Type</label>
-              <select
-                required
-                {...register("employmentType")}
-                className="create-job-input"
-              >
-                <option value="">Choose your experience </option>
-                <option value="Full-time">Full-time</option>
-                <option value="Part-time">Part-time</option>
-                <option value="Temporary">Temporary</option>
-                <option value="Work remotely">Work remotely</option>
-              </select>
             </div>
           </div>
 
@@ -206,23 +199,13 @@ function CreateJob() {
             ></textarea>
           </div>
 
-          {/* 8th/last row */}
-          <div className="w-full">
-            <label className="block mb-2 text-lg">Job Posted By</label>
-
+          <div className="flex justify-center items-center">
             <input
-              required
-              type="email"
-              placeholder="your email"
-              {...register("postedBy")}
-              className="create-job-input"
+              className="block hover:opacity-90 bg-teal-600 text-white font-semibold px-8 py-2 rounded cursor-pointer"
+              type="submit"
+              value="Create Job"
             />
           </div>
-          <input
-            required
-            className="block mt-12 bg-blue text-white font-semibold px-8 py-2 rounded-sm cursor-pointer"
-            type="submit"
-          />
         </form>
       </div>
     </div>

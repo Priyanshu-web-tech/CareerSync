@@ -60,9 +60,9 @@ export default function SignIn() {
   }, []);
 
   return (
-    <div className="bg-gray-100 min-h-screen flex items-center justify-center">
-      <div className="bg-gray-200 rounded-lg shadow-lg p-8 max-w-md w-full">
-        <h1 className="text-3xl font-semibold text-center mb-6 text-indigo-700">
+    <div className="mt-14 flex items-center justify-center">
+      <div className="shadow-lg  p-8 max-w-md w-full">
+        <h1 className="text-3xl font-semibold text-center mb-6 text-green-800">
           Sign In
         </h1>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -73,7 +73,7 @@ export default function SignIn() {
             <input
               type="email"
               placeholder="Email"
-              className="w-full border rounded-lg py-3 px-4 focus:outline-none focus:border-indigo-700"
+              className="w-full border rounded-lg py-3 px-4 focus:outline-none focus:border-green-800"
               id="email"
               onChange={handleChange}
             />
@@ -85,14 +85,14 @@ export default function SignIn() {
             <input
               type="password"
               placeholder="Password"
-              className="w-full border rounded-lg py-3 px-4 focus:outline-none focus:border-indigo-700"
+              className="w-full border rounded-lg py-3 px-4 focus:outline-none focus:border-green-800"
               id="password"
               onChange={handleChange}
             />
           </div>
           <button
             disabled={loading}
-            className="w-full bg-indigo-700 text-white py-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
+            className="w-full bg-green-800 text-white py-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
           >
             {loading ? "Loading..." : "Sign In"}
           </button>
@@ -102,7 +102,7 @@ export default function SignIn() {
           <p className="mr-1">Don't have an account?</p>
           <Link
             to={"/sign-up"}
-            className="text-indigo-700 font-semibold hover:underline"
+            className="text-green-800 font-semibold hover:underline"
           >
             Sign up
           </Link>

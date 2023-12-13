@@ -149,15 +149,18 @@ const UpdateJob = () => {
           {/* 4th row */}
           <div className="create-job-flex">
             <div className="lg:w-1/2 w-full">
-              <label className="block mb-2 text-lg">Job Posting Date</label>
-              <input
+              <label className="block mb-2 text-lg">Experience Type</label>
+              <select
                 required
-                type="date"
-                defaultValue={postingDate}
-                placeholder="Ex: 2023-11-03"
-                {...register("postingDate")}
+                {...register("employmentType")}
                 className="create-job-input"
-              />
+              >
+                <option value={employmentType}>{employmentType} </option>
+                <option value="Full-time">Full-time</option>
+                <option value="Part-time">Part-time</option>
+                <option value="Temporary">Temporary</option>
+                <option value="Work remotely">Work remotely</option>
+              </select>
             </div>
             <div className="lg:w-1/2 w-full">
               <label className="block mb-2 text-lg">Experience Level</label>
@@ -191,7 +194,7 @@ const UpdateJob = () => {
 
           {/* 6th row */}
           <div className="create-job-flex">
-            <div className="lg:w-1/2 w-full">
+            <div className="w-full">
               <label className="block mb-2 text-lg">Company Logo</label>
               <input
                 required
@@ -202,26 +205,11 @@ const UpdateJob = () => {
                 className="create-job-input"
               />
             </div>
-            <div className="lg:w-1/2 w-full">
-              <label className="block mb-2 text-lg">Experience Type</label>
-              <select
-                required
-                {...register("employmentType")}
-                className="create-job-input"
-              >
-                <option value={employmentType}>{employmentType} </option>
-                <option value="Full-time">Full-time</option>
-                <option value="Part-time">Part-time</option>
-                <option value="Temporary">Temporary</option>
-                <option value="Work remotely">Work remotely</option>
-              </select>
-            </div>
           </div>
 
           {/* 7th row */}
           <div className="w-full">
             <label className="block mb-2 text-lg">Job Description</label>
-
             <textarea
               required
               className="w-full pl-3 py-1.5 focus:outline-none placeholder:text-gray-600"
@@ -232,24 +220,13 @@ const UpdateJob = () => {
             ></textarea>
           </div>
 
-          {/* 8th/last row */}
-          <div className="w-full">
-            <label className="block mb-2 text-lg">Job Posted By</label>
-
+          <div className="flex justify-center items-center">
             <input
-              required
-              defaultValue={postedBy}
-              type="email"
-              placeholder="your email"
-              {...register("postedBy")}
-              className="create-job-input"
+              className="block hover:opacity-90 bg-teal-600 text-white font-semibold px-8 py-2 rounded cursor-pointer"
+              type="submit"
+              value="Update Job"
             />
           </div>
-          <input
-            required
-            className="block mt-12 bg-blue text-white font-semibold px-8 py-2 rounded-sm cursor-pointer"
-            type="submit"
-          />
         </form>
       </div>
     </div>

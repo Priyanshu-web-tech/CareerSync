@@ -3,7 +3,6 @@ import Banner from "../components/Banner";
 import Card from "../components/Card";
 import Jobs from "./Jobs";
 import Sidebar from "../components/Sidebar/Sidebar";
-import Newsletter from "../components/Newsletter";
 
 const Home = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -118,7 +117,7 @@ const Home = () => {
       <Banner query={query} handleInputChange={handleInputChange} />
 
       {/* Main content */}
-      <div className="bg-[#FAFAFA] md:grid grid-cols-4 gap-8 lg:px-24 px-4 py-12">
+      <div className="bg-[#FAFAFA] md:grid grid-cols-3 gap-8 lg:px-24 px-4 py-12">
         {/* Left side */}
         <div className="bg-white p-4 rounded">
           <Sidebar handleChange={handleChange} handleClick={handleClick} />
@@ -171,10 +170,7 @@ const Home = () => {
           )}
         </div>
 
-        {/* Right side */}
-        <div className="bg-white p-4 rounded">
-          <Newsletter />
-        </div>
+      
       </div>
     </div>
   );

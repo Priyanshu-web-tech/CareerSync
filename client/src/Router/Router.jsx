@@ -8,9 +8,9 @@ import UpdateJob from "../Pages/UpdateJob";
 import Signin from "../Pages/Signin";
 import Signup from "../Pages/Signup";
 import PrivateRoute from "../components/PrivateRoute";
-
 import JobDetails from "../Pages/JobDetails";
 import Profile from "../Pages/Profile";
+import About from "../Pages/About";
 
 const router = createBrowserRouter([
   {
@@ -38,6 +38,10 @@ const router = createBrowserRouter([
       {
         path: "/sign-up",
         element: <Signup />,
+      },
+      {
+        path: "/about",
+        element: <About />,
       },
       {
         path: "/",

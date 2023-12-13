@@ -35,7 +35,7 @@ const SalaryPage = () => {
 
           <button
             onClick={handleSearch}
-            className="bg-blue text-white font-semibold px-8 py-2 rounded-sm mb-4"
+            className="bg-teal-600 text-white font-semibold px-8 py-2 rounded-sm mb-4"
           >
             Search
           </button>
@@ -48,7 +48,7 @@ const SalaryPage = () => {
         {salary.map((data) => (
           <div key={data.id} className="shadow px-4 py-8">
             <h4 className="font-semibold text-xl">{data.title}</h4>
-            <p className="my-2 font-medium text-blue text-lg">{data.salary}</p>
+            <p className="my-2 font-medium text-teal-600 text-lg">{data.salary}</p>
             <div className="flex flex-wrap gap-4">
               <a href="/" className="underline">
                 {data.status}
