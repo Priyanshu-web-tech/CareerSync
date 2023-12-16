@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import PageHeader from "../components/PageHeader";
+import { useSelector } from "react-redux";
 
 const SalaryPage = () => {
+  const theme = useSelector((state) => state.theme);
+
   const [searchText, setSearchText] = useState("");
   const [salary, setSalary] = useState([]);
 
@@ -20,7 +23,9 @@ const SalaryPage = () => {
     setSalary(filter);
   };
   return (
-    <div className="max-w-screen-2xl container max-auto xl:px-24 px-4">
+    <div className={`max-w-screen-2xl container max-auto xl:px-24 px-4 min-h-screen ${
+      theme.darkMode ? "dark:bg-slate-800 text-neutral-200" : ""
+    }`}>
       <PageHeader title={"Estimate Salary"} path={"Salary"} />
 
       <div className="mt-5 ">
@@ -35,7 +40,7 @@ const SalaryPage = () => {
 
           <button
             onClick={handleSearch}
-            className="bg-teal-600 text-white font-semibold px-8 py-2 rounded-sm mb-4"
+            className="bg-teal-600  font-semibold px-8 py-2 rounded-sm mb-4"
           >
             Search
           </button>
@@ -43,10 +48,12 @@ const SalaryPage = () => {
       </div>
 
       {/* salary display card */}
-      <div className="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-12 my-12 items-center">
+      <div className="grid p-4 lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-12  items-center">
 
         {salary.map((data) => (
-          <div key={data.id} className="shadow px-4 py-8">
+          <div key={data.id} className={` rounded shadow px-4 py-8 ${
+            theme.darkMode ? "dark:bg-slate-700" : ""
+          }`}>
             <h4 className="font-semibold text-xl">{data.title}</h4>
             <p className="my-2 font-medium text-teal-600 text-lg">{data.salary}</p>
             <div className="flex flex-wrap gap-4">

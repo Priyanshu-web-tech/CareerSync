@@ -10,6 +10,7 @@ const MyJobs = () => {
   const [isloading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
+  const theme = useSelector((state) => state.theme);
 
   useEffect(() => {
     setIsLoading(true);
@@ -59,16 +60,20 @@ const MyJobs = () => {
       });
   };
   return (
-    <div className="mx-w-screen-2xl container mx-auto xl:px-24 px-4">
-      <div className="my=jobs-container">
-        <h1 className="text-center p-4">All My Jobs</h1>
+    <div
+      className={`xl:px-24 px-4 min-h-screen ${
+        theme.darkMode ? "dark:bg-slate-700 text-white" : ""
+      }`}
+    >
+      <div>
+        <h1 className="text-center p-4 text-2xl font-semibold ">All My Jobs</h1>
         <div className="search-box p-2 text-center mb-2">
           <input
             onChange={(e) => setSearchText(e.target.value)}
             type="text"
             name="Search"
             id="Search"
-            className="py-2 pl-3 border focus:outline-none lg:w-6/12 mb-4"
+            className="py-2 pl-3 text-black border focus:outline-none lg:w-6/12 mb-4"
           />
 
           <button
@@ -83,7 +88,10 @@ const MyJobs = () => {
       {/* Table */}
       <section className="py-1 bg-blueGray-50">
         <div className="w-full xl:w-8/12 mb-12 xl:mb-0 px-4 mx-auto mt-5">
-          <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded ">
+
+          <div className={`relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded ${
+        theme.darkMode ? "dark:bg-slate-800 text-white" : "bg-white"
+      } `}>
             <div className="rounded-t mb-0 px-4 py-3 border-0">
               <div className="flex flex-wrap items-center">
                 <div className="relative w-full px-4 max-w-full flex-grow flex-1">
@@ -134,11 +142,6 @@ const MyJobs = () => {
                     </tr>
                   </thead>
 
-                  {/* {isloading ? (
-                  <div className="flex items-center justify-center h-20">
-                    <p>Loading......</p>
-                  </div>
-                ) : ( */}
                   <tbody>
                     {currentJobs.map((job, index) => (
                       <tr key={index}>

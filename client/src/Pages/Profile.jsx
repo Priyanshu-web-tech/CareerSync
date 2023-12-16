@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useRef, useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { MdModeEditOutline } from "react-icons/md";
@@ -19,7 +19,6 @@ import {
   deleteUserSuccess,
   signOutUserStart,
 } from "../redux/user/userSlice";
-import { useDispatch } from "react-redux";
 
 export default function Profile() {
   const fileRef = useRef(null);
@@ -29,6 +28,7 @@ export default function Profile() {
   const [fileUploadError, setFileUploadError] = useState(false);
   const [formData, setFormData] = useState({});
   const [updateSuccess, setUpdateSuccess] = useState(false);
+  const theme = useSelector((state) => state.theme);
 
   const dispatch = useDispatch();
 
@@ -85,12 +85,23 @@ export default function Profile() {
 
       dispatch(updateUserSuccess(data));
       setUpdateSuccess(true);
-      Swal.fire(`User Updated successfullly`);
+      Swal.fire({
+        text: "User Updated Successfully",
+        confirmButtonColor: "teal",
+        background: `${theme.darkMode ? "#1e293b" : ""}`,
+        color: `${theme.darkMode ? "white" : ""}`,
+      });
     } catch (error) {
       dispatch(updateUserFailure(error.message));
-      Swal.fire(`Error in updating User`);
+      Swal.fire({
+        text: "Error in updating User",
+        confirmButtonColor: "red",
+        background: `${theme.darkMode ? "#1e293b" : ""}`,
+        color: `${theme.darkMode ? "white" : ""}`,
+      });
     }
   };
+
 
   const handleDeleteUser = () => {
     Swal.fire({
@@ -98,9 +109,13 @@ export default function Profile() {
       text: "You will not be able to recover this account!",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#d33",
+      confirmButtonColor: "teal",
       cancelButtonColor: "#3085d6",
       confirmButtonText: "Yes, delete it!",
+      background: `${theme.darkMode ? "#1e293b" : ""}`,
+      color: `${theme.darkMode ? "white" : ""}`,
+
+
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
@@ -115,6 +130,8 @@ export default function Profile() {
               icon: "error",
               title: "Error",
               text: data.message,
+              background: `${theme.darkMode ? "#1e293b" : ""}`,
+    color: `${theme.darkMode ? "white" : ""}`,
             });
             return;
           }
@@ -123,6 +140,8 @@ export default function Profile() {
             icon: "success",
             title: "Success",
             text: "User deleted successfully!",
+            background: `${theme.darkMode ? "#1e293b" : ""}`,
+    color: `${theme.darkMode ? "white" : ""}`,
           });
         } catch (error) {
           dispatch(deleteUserFailure(error.message));
@@ -130,6 +149,8 @@ export default function Profile() {
             icon: "error",
             title: "Error",
             text: "Error in deleting user",
+            background: `${theme.darkMode ? "#1e293b" : ""}`,
+    color: `${theme.darkMode ? "white" : ""}`,
           });
         }
       }
@@ -152,8 +173,12 @@ export default function Profile() {
   };
 
   return (
-    <div className="p-3 max-w-lg mx-auto">
-      <h1 className="text-3xl font-semibold text-center my-7">Profile</h1>
+    <div className={`flex items-center justify-center min-h-screen  ${
+      theme.darkMode ? "dark:bg-slate-700 text-white" : ""
+    }`}>
+
+      <div className="p-8 max-w-md w-full">
+      <h1 className="text-3xl font-semibold text-center mb-6">Profile</h1>
       <form
         onSubmit={handleSubmit}
         className="flex flex-col gap-4 items-center"
@@ -173,7 +198,7 @@ export default function Profile() {
             className="rounded-full h-24 w-24 object-cover cursor-pointer border-4 "
           />
           <label className="absolute bottom-0 right-0 rounded-full bg-teal-700 text-white px-2 py-1 cursor-pointer">
-          <MdModeEditOutline />
+            <MdModeEditOutline />
           </label>
         </div>
 
@@ -185,19 +210,27 @@ export default function Profile() {
           ) : filePerc > 0 && filePerc < 100 ? (
             <span className="text-teal-700">{`Uploading ${filePerc}%`}</span>
           ) : filePerc === 100 ? (
-            <span className="text-teal-700">
-              Image successfully uploaded!
-            </span>
+            <span className="text-teal-700">Image successfully uploaded!</span>
           ) : (
             ""
           )}
         </p>
+
+        <input
+          type="text"
+          placeholder="name"
+          defaultValue={currentUser.name}
+          id="name"
+          className="border p-3  text-black rounded-lg w-full"
+          onChange={handleChange}
+        />
+
         <input
           type="text"
           placeholder="username"
           defaultValue={currentUser.username}
           id="username"
-          className="border p-3 rounded-lg w-full"
+          className="border p-3 text-black rounded-lg w-full"
           onChange={handleChange}
         />
         <input
@@ -205,7 +238,7 @@ export default function Profile() {
           placeholder="email"
           id="email"
           defaultValue={currentUser.email}
-          className="border p-3 rounded-lg w-full"
+          className="border p-3  text-black   rounded-lg w-full"
           onChange={handleChange}
         />
         <input
@@ -213,7 +246,16 @@ export default function Profile() {
           placeholder="password"
           onChange={handleChange}
           id="password"
-          className="border p-3 rounded-lg w-full"
+          className="border p-3  text-black  rounded-lg w-full"
+        />
+
+        <input
+          type="text"
+          placeholder="resume link"
+          defaultValue={currentUser.resume}
+          id="resume"
+          className="border p-3   text-black  rounded-lg w-full"
+          onChange={handleChange}
         />
         <button
           disabled={loading}
@@ -240,6 +282,7 @@ export default function Profile() {
 
       {/* Display error messages */}
       <p className="text-slate-500 mt-5">{error ? error : ""}</p>
+      </div>
     </div>
   );
 }

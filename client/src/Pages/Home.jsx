@@ -3,8 +3,11 @@ import Banner from "../components/Banner";
 import Card from "../components/Card";
 import Jobs from "./Jobs";
 import Sidebar from "../components/Sidebar/Sidebar";
+import { useSelector } from "react-redux";
 
 const Home = () => {
+  const theme = useSelector((state) => state.theme);
+
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [jobs, setJobs] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -113,18 +116,18 @@ const Home = () => {
   console.log(result);
 
   return (
-    <div>
+    <div >
       <Banner query={query} handleInputChange={handleInputChange} />
 
       {/* Main content */}
-      <div className="bg-[#FAFAFA] md:grid grid-cols-3 gap-8 lg:px-24 px-4 py-12">
+      <div className={` md:grid grid-cols-3 gap-8 lg:px-24 px-4 py-12 ${theme.darkMode ? "dark:bg-slate-700 text-white" : "bg-[#FAFAFA] text-black"}`}>
         {/* Left side */}
-        <div className="bg-white p-4 rounded">
+        <div className={`p-4 rounded ${theme.darkMode ? "dark:bg-slate-800" : "bg-white"} `}>
           <Sidebar handleChange={handleChange} handleClick={handleClick} />
         </div>
 
         {/* Job Cards */}
-        <div className="col-span-2 bg-white p-4 rounded-sm">
+        <div className={`col-span-2 p-4 rounded-sm ${theme.darkMode ? "dark:bg-slate-800" : "bg-white"} `}>
           {isLoading ? (
             <p className="font-medium">Loading...</p>
           ) : result.length > 0 ? (
@@ -169,8 +172,6 @@ const Home = () => {
             ""
           )}
         </div>
-
-      
       </div>
     </div>
   );

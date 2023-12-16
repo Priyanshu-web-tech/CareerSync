@@ -2,8 +2,13 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { FiCalendar, FiClock, FiDollarSign, FiMapPin } from "react-icons/fi";
 import { motion } from "framer-motion";
+import { useSelector } from "react-redux";
+
 
 function Card({ data }) {
+
+  const theme = useSelector((state) => state.theme);
+
   const {
     _id,
     companyName,
@@ -25,7 +30,9 @@ function Card({ data }) {
 
   return (
     <motion.section
-      className="card  overflow-hidden shadow-lg bg-white p-4 mb-6"
+      className={`card  overflow-hidden shadow-lg  p-4 mb-6 ${
+        theme.darkMode ? "dark:bg-slate-800 text-neutral-300" : "bg-white "
+      } `}
       variants={cardVariants}
       initial="hidden"
       animate="visible"
@@ -49,37 +56,38 @@ function Card({ data }) {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
         >
-          <h4 className="text-primary mb-1 font-bold">{companyName}</h4>
+          <h4 className="mb-1 font-bold">{companyName}</h4>
 
           <h3 className="text-lg font-semibold mb-2">{jobTitle}</h3>
 
           <motion.div
-            className="flex text-primary/70 text-sm flex-wrap gap-4 mb-2"
+            className="flex  text-sm flex-wrap gap-4 mb-2"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6 }}
           >
             <motion.span className="flex items-center gap-2">
-              <FiMapPin className="text-gray-500" /> {jobLocation}
+              <FiMapPin  /> {jobLocation}
             </motion.span>
             <motion.span className="flex items-center gap-2">
-              <FiClock className="text-gray-500" /> {employmentType}
+              <FiClock  /> {employmentType}
             </motion.span>
             <motion.span className="flex items-center gap-2">
-              <FiDollarSign className="text-gray-500" /> {minPrice}-{maxPrice}k
+              <FiDollarSign  /> {minPrice}-{maxPrice}k
             </motion.span>
             <motion.span className="flex items-center gap-2">
-              <FiCalendar className="text-gray-500" /> {postingDate}
+              <FiCalendar  /> {postingDate}
             </motion.span>
           </motion.div>
 
           <motion.p
-            className="text-sm text-primary/70"
+            className="text-sm  "
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.8 }}
           >
-            {description}
+            {description.slice(0,100)}
+            <span className="font-extrabold">......</span>
           </motion.p>
         </motion.div>
       </Link>

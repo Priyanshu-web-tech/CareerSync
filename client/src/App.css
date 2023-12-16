@@ -1,6 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@100;300;400;500;600;700&display=swap');
-body{
-  font-family: 'Raleway', sans-serif;}
+* {
+  font-family: 'Raleway', sans-serif;
+  transition: background-color 0.3s ease-in-out;
+
+}
 
 .active{
   color: #0d9488;
@@ -147,5 +150,5 @@ li {
 }
 
 .create-job-input{
-  @apply block w-full flex-1 bg-white py-1.5 pl-3 text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm sm:leading-6
+  @apply block w-full flex-1  py-1.5 pl-3  placeholder:text-gray-400 focus:outline-none sm:text-sm sm:leading-6
 }

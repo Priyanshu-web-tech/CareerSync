@@ -8,6 +8,7 @@ import { FaGoogle } from "react-icons/fa";
 import { motion } from "framer-motion";
 
 const OAuth = () => {
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -17,6 +18,7 @@ const OAuth = () => {
       const auth = getAuth(app);
 
       const result = await signInWithPopup(auth, provider);
+
 
       const res = await fetch("/api/auth/google", {
         method: "POST",
@@ -52,7 +54,7 @@ const OAuth = () => {
       <motion.button
         type="button"
         onClick={handleGoogleClick}
-        className="bg-gray-200 hover:bg-gray-300 text-gray-700 p-3 rounded-lg uppercase w-full flex items-center justify-center space-x-2"
+        className={`bg-gray-200 hover:bg-gray-300 text-gray-700 p-3 rounded-lg uppercase w-full flex items-center justify-center space-x-2 `}
         whileHover="hover"
         variants={buttonVariants}
       >

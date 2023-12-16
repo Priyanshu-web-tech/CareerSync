@@ -1,40 +1,49 @@
 import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { FaBarsStaggered, FaXmark } from "react-icons/fa6";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { motion } from "framer-motion";
+import { toggleTheme } from "../redux/theme/themeReducer";
+import { FaSun, FaMoon } from "react-icons/fa";
 
 const Navbar = () => {
-  const { currentUser } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const theme = useSelector((state) => state.theme);
 
+  const handleToggle = () => {
+    dispatch(toggleTheme());
+  };
+  const { currentUser } = useSelector((state) => state.user);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleMenuToggle = () => {
     setIsMenuOpen(!isMenuOpen);
   };
-
   const navItems = [
     { path: "/", title: "Start a search" },
     { path: "/my-job", title: "My Jobs" },
     { path: "/salary", title: "Salary Estimate" },
     { path: "/post-job", title: "Post a Job" },
   ];
+
   return (
     <motion.header
-      initial={{ opacity: 0, y: -30 }}
+      initial={{ opacity: 0, y: 0 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="max-w-screen-2xl   xl:px-12 px-4"
+      className={`max-w-screen-2xl  xl:px-12 px-4 ${
+        theme.darkMode ? "dark:bg-slate-800 text-white" : ""
+      }`}
     >
       <motion.nav
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
+        initial={{ opacity: 0, y: 0 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.2 }}
         className="flex justify-between items-center py-6"
       >
         {/* left */}
         <Link
-          className="flex items-center gap-1 text-2xl font-semibold text-black"
+          className="flex items-center gap-1 text-2xl font-semibold "
           to="/"
         >
           <motion.svg
@@ -81,7 +90,18 @@ const Navbar = () => {
         </ul>
 
         {/* Sign up and login button (end part) */}
-        <div className="text-base text-primary font-medium space-x-5 hidden lg:flex items-center">
+        <div className="text-base  font-medium space-x-5 hidden lg:flex items-center">
+          <button
+            className="flex items-center justify-center bg-gray-200 rounded-full p-2 focus:outline-none"
+            onClick={handleToggle}
+          >
+            {theme.darkMode ? (
+              <FaSun size={18} color="teal" />
+            ) : (
+              <FaMoon size={18} color="teal" />
+            )}
+          </button>
+
           <Link className="hover:text-teal-600" to="/">
             Home
           </Link>
@@ -109,7 +129,11 @@ const Navbar = () => {
 
         {/* Mobile menu */}
         <div className="lg:hidden block">
-          <motion.button whileHover={{ scale: 1.1 }} onClick={handleMenuToggle}>
+          <motion.button
+            className="focus:outline-none"
+            whileHover={{ scale: 1.1 }}
+            onClick={handleMenuToggle}
+          >
             {isMenuOpen ? (
               <FaXmark className="w-5 h-5 text-primary" />
             ) : (
@@ -121,10 +145,10 @@ const Navbar = () => {
 
       {/* Nav items for mobile */}
       <motion.div
-        initial={{ opacity: 0, y: -50 }}
-        animate={{ opacity: isMenuOpen ? 1 : 0, y: isMenuOpen ? 0 : -50 }}
+        initial={{ opacity: 0, y: 0 }}
+        animate={{ opacity: isMenuOpen ? 1 : 0, y: isMenuOpen ? 0 : -30 }}
         transition={{ duration: 0.5 }}
-        className={`px-4  rounded-sm ${isMenuOpen ? "" : "hidden"} `}
+        className={`px-4  rounded-sm lg:hidden ${isMenuOpen ? "" : "hidden"} `}
       >
         <ul>
           {navItems.map(({ path, title }) => (
@@ -154,6 +178,18 @@ const Navbar = () => {
               About
             </Link>
           </motion.li>
+          <li>
+            <button
+              className="flex items-center justify-center bg-gray-200 rounded-full p-2 focus:outline-none"
+              onClick={handleToggle}
+            >
+              {theme.darkMode ? (
+                <FaSun size={18} color="teal" />
+              ) : (
+                <FaMoon size={18} color="teal" />
+              )}
+            </button>{" "}
+          </li>
           <motion.li className="py-1" whileHover={{ scale: 1.1 }}>
             <Link to="/profile">
               {currentUser ? (

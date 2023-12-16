@@ -3,8 +3,11 @@ import { useLoaderData, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import CreatableSelect from "react-select/creatable";
 import Swal from "sweetalert2";
+import { useSelector } from "react-redux";
+
 
 const UpdateJob = () => {
+  const theme = useSelector((state) => state.theme);
   const { id } = useParams();
 
   const {
@@ -45,7 +48,13 @@ const UpdateJob = () => {
       .then((result) => {
         console.log(result);
         if (result.acknowledged === true) {
-          Swal.fire(`Job Updated successfullly`);
+          Swal.fire(  {
+            text: "Job Updated Successfully",
+            confirmButtonColor: "teal",
+            background: `${theme.darkMode ? "#1e293b" : ""}`,
+            color: `${theme.darkMode ? "white" : ""}`,
+          }
+        );
         }
         reset({});
       });
@@ -63,9 +72,13 @@ const UpdateJob = () => {
     { value: "Redux", label: "Redux" },
   ];
   return (
-    <div className="max-w-screen-2xl container mx-auto xl:px-24 px-4">
+    <div className={`max-w-screen-2xl container mx-auto xl:px-24 px-4 ${
+      theme.darkMode ? "dark:bg-slate-800 text-white" : ""
+    }`}>
       {/* form */}
-      <div className="bg-[#FAFAFA] py-10 px-4 lg:px-16">
+      <div className={` py-10 px-4 lg:px-16 ${
+        theme.darkMode ? "dark:bg-slate-700" : "bg-[#FAFAFA]"
+      }`}>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           {/* 1st row */}
           <div className="create-job-flex">
@@ -76,7 +89,9 @@ const UpdateJob = () => {
                 type="text"
                 defaultValue={jobTitle}
                 {...register("jobTitle")}
-                className="create-job-input"
+                className={`create-job-input ${
+                  theme.darkMode ? "dark:bg-slate-800 text-wh" : ""
+                }`}
               />
             </div>
             <div className="lg:w-1/2 w-full">
@@ -87,7 +102,9 @@ const UpdateJob = () => {
                 placeholder="Ex: Microsoft"
                 defaultValue={companyName}
                 {...register("companyName")}
-                className="create-job-input"
+                className={`create-job-input ${
+                  theme.darkMode ? "dark:bg-slate-800 text-white" : ""
+                }`}
               />
             </div>
           </div>
@@ -102,7 +119,9 @@ const UpdateJob = () => {
                 defaultValue={minPrice}
                 placeholder="$20k"
                 {...register("minPrice")}
-                className="create-job-input"
+                className={`create-job-input ${
+                  theme.darkMode ? "dark:bg-slate-800 text-white" : ""
+                }`}
               />
             </div>
             <div className="lg:w-1/2 w-full">
@@ -113,7 +132,9 @@ const UpdateJob = () => {
                 defaultValue={maxPrice}
                 placeholder="$120k"
                 {...register("maxPrice")}
-                className="create-job-input"
+                className={`create-job-input ${
+                  theme.darkMode ? "dark:bg-slate-800 text-white" : ""
+                }`}
               />
             </div>
           </div>
@@ -125,7 +146,9 @@ const UpdateJob = () => {
               <select
                 required
                 {...register("salaryType")}
-                className="create-job-input"
+                className={`create-job-input ${
+                  theme.darkMode ? "dark:bg-slate-800 text-white" : ""
+                }`}
               >
                 <option value={salaryType}>{salaryType} </option>
                 <option value="Hourly">Hourly</option>
@@ -141,7 +164,9 @@ const UpdateJob = () => {
                 placeholder="Ex: London"
                 defaultValue={jobLocation}
                 {...register("jobLocation")}
-                className="create-job-input"
+                className={`create-job-input ${
+                  theme.darkMode ? "dark:bg-slate-800 text-white" : ""
+                }`}
               />
             </div>
           </div>
@@ -153,7 +178,9 @@ const UpdateJob = () => {
               <select
                 required
                 {...register("employmentType")}
-                className="create-job-input"
+                className={`create-job-input ${
+                  theme.darkMode ? "dark:bg-slate-800 text-white" : ""
+                }`}
               >
                 <option value={employmentType}>{employmentType} </option>
                 <option value="Full-time">Full-time</option>
@@ -167,7 +194,9 @@ const UpdateJob = () => {
               <select
                 required
                 {...register("experienceLevel")}
-                className="create-job-input"
+                className={`create-job-input ${
+                  theme.darkMode ? "dark:bg-slate-800 text-white" : ""
+                }`}
               >
                 <option value={experienceLevel}>{experienceLevel} </option>
                 <option value="No Experience">No Experience</option>
@@ -182,13 +211,41 @@ const UpdateJob = () => {
           <div>
             <label className="block mb-2 text-lg">Required Skill Sets:</label>
 
-            <CreatableSelect
-              required
+           <CreatableSelect
               defaultValue={skills}
               onChange={setSelectedOption}
               options={options}
               isMulti
-              className="create-job-input py-4"
+              className="create-job-input"
+  
+              required
+              styles={{
+                control: (provided) => ({
+                  ...provided,
+                  backgroundColor: theme.darkMode ? "#2D3748" : "white", 
+                  
+                }),
+                menu: (provided) => ({
+                  ...provided,
+                  backgroundColor: theme.darkMode ? "#2D3748" : "white",
+                }),
+                option: (provided, state) => ({
+                  ...provided,
+                  backgroundColor: state.isSelected
+                    ? (theme.darkMode ? "#4A5568" : "#D1D5DB") 
+                    : (theme.darkMode ? "#2D3748" : "white"), 
+                }),
+                multiValue: (provided) => ({
+                  ...provided,
+                  backgroundColor: theme.darkMode ? "#4A5568" : "#D1D5DB", 
+                  color: theme.darkMode ? "white" : "black", 
+                }),
+
+                multiValueLabel: (provided) => ({
+                  ...provided,
+                  color: theme.darkMode ? "white" : "black", 
+                }),
+              }}
             />
           </div>
 
@@ -202,7 +259,9 @@ const UpdateJob = () => {
                 placeholder="Paste your compnay logo URL"
                 defaultValue={companyLogo}
                 {...register("companyLogo")}
-                className="create-job-input"
+                className={`create-job-input ${
+                  theme.darkMode ? "dark:bg-slate-800 text-white" : ""
+                }`}
               />
             </div>
           </div>
@@ -212,7 +271,9 @@ const UpdateJob = () => {
             <label className="block mb-2 text-lg">Job Description</label>
             <textarea
               required
-              className="w-full pl-3 py-1.5 focus:outline-none placeholder:text-gray-600"
+              className={`w-full pl-3 py-1.5 focus:outline-none placeholder:text-gray-600 ${
+                theme.darkMode ? "dark:bg-slate-800 text-white" : ""
+              }`}
               rows={6}
               defaultValue={description}
               placeholder="Job Description"

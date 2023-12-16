@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import OAuth from "../components/OAuth";
+import { useSelector } from "react-redux";
 
 export default function SignUp() {
+  const theme = useSelector((state) => state.theme);
   const [formData, setFormData] = useState({});
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -40,35 +42,52 @@ export default function SignUp() {
     }
   };
   return (
-    <div className="mt-14 flex items-center justify-center">
-      <div className=" shadow-lg  p-8 max-w-md w-full">
-        <h1 className="text-3xl font-semibold text-center mb-6 text-green-800">Sign up</h1>
+    <div
+      className={`flex items-center justify-center min-h-screen ${
+        theme.darkMode ? "dark:bg-slate-700 text-white" : "text-black"
+      }`}
+    >
+      <div
+        className={`shadow-lg rounded p-8 max-w-md w-full ${
+          theme.darkMode ? "dark:bg-slate-800" : ""
+        }`}
+      >
+        <h1 className="text-3xl font-semibold text-center mb-6 text-teal-800">
+          Sign up
+        </h1>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <input
             type="text"
+            placeholder="name"
+            className="border p-3 text-black  rounded-lg"
+            id="name"
+            onChange={handleChange}
+          />
+          <input
+            type="text"
             placeholder="username"
-            className="border p-3 rounded-lg"
+            className="border p-3 text-black  rounded-lg"
             id="username"
             onChange={handleChange}
           />
           <input
             type="email"
             placeholder="email"
-            className="border p-3 rounded-lg"
+            className="border p-3 text-black  rounded-lg"
             id="email"
             onChange={handleChange}
           />
           <input
             type="password"
             placeholder="password"
-            className="border p-3 rounded-lg"
+            className="border p-3 text-black  rounded-lg"
             id="password"
             onChange={handleChange}
           />
 
           <button
             disabled={loading}
-            className="bg-green-800 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
+            className="bg-teal-800 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
           >
             {loading ? "Loading..." : "Sign Up"}
           </button>
@@ -76,7 +95,10 @@ export default function SignUp() {
         </form>
         <div className="flex  items-center justify-center gap-2 mt-5">
           <p>Have an account?</p>
-          <Link className="text-green-800 font-semibold hover:underline" to={"/sign-in"}>
+          <Link
+            className="text-teal-800 font-semibold hover:underline"
+            to={"/sign-in"}
+          >
             <span className="text-teal-700">Sign in</span>
           </Link>
         </div>

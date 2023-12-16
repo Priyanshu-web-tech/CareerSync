@@ -4,7 +4,9 @@ import CreatableSelect from "react-select/creatable";
 import Swal from "sweetalert2";
 import { useSelector } from "react-redux";
 
-function CreateJob() {
+const CreateJob = () => {
+  const theme = useSelector((state) => state.theme);
+
   const [selectedOption, setSelectedOption] = useState(null);
   const { currentUser } = useSelector((state) => state.user);
 
@@ -28,7 +30,13 @@ function CreateJob() {
       .then((result) => {
         console.log(result);
         if (result.acknowledged === true) {
-          Swal.fire(`Job Created successfullly`);
+          Swal.fire(  {
+            text: "Job Created Successfully",
+            confirmButtonColor: "teal",
+            background: `${theme.darkMode ? "#1e293b" : ""}`,
+            color: `${theme.darkMode ? "white" : ""}`,
+          }
+        );
         }
         reset();
       });
@@ -47,9 +55,17 @@ function CreateJob() {
   ];
 
   return (
-    <div className="max-w-screen-2xl container mx-auto xl:px-24 px-4">
+    <div
+      className={`max-w-screen-2xl container mx-auto xl:px-24 px-4 ${
+        theme.darkMode ? "dark:bg-slate-800 text-white" : ""
+      }`}
+    >
       {/* form */}
-      <div className="bg-[#FAFAFA] py-10 px-4 lg:px-16">
+      <div
+        className={` py-10 px-4 lg:px-16 ${
+          theme.darkMode ? "dark:bg-slate-700" : "bg-[#FAFAFA]"
+        }`}
+      >
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           {/* 1st row */}
           <div className="create-job-flex">
@@ -60,7 +76,9 @@ function CreateJob() {
                 type="text"
                 defaultValue={"Web Developer"}
                 {...register("jobTitle")}
-                className="create-job-input"
+                className={`create-job-input ${
+                  theme.darkMode ? "dark:bg-slate-800 text-white" : ""
+                }`}
               />
             </div>
             <div className="lg:w-1/2 w-full">
@@ -70,7 +88,9 @@ function CreateJob() {
                 type="text"
                 placeholder="Ex: Microsoft"
                 {...register("companyName")}
-                className="create-job-input"
+                className={`create-job-input ${
+                  theme.darkMode ? "dark:bg-slate-800 text-white" : ""
+                }`}
               />
             </div>
           </div>
@@ -84,7 +104,9 @@ function CreateJob() {
                 type="text"
                 placeholder="$20k"
                 {...register("minPrice")}
-                className="create-job-input"
+                className={`create-job-input ${
+                  theme.darkMode ? "dark:bg-slate-800 text-white" : ""
+                }`}
               />
             </div>
             <div className="lg:w-1/2 w-full">
@@ -94,7 +116,9 @@ function CreateJob() {
                 type="text"
                 placeholder="$120k"
                 {...register("maxPrice")}
-                className="create-job-input"
+                className={`create-job-input ${
+                  theme.darkMode ? "dark:bg-slate-800 text-white" : ""
+                }`}
               />
             </div>
           </div>
@@ -106,7 +130,9 @@ function CreateJob() {
               <select
                 required
                 {...register("salaryType")}
-                className="create-job-input"
+                className={`create-job-input ${
+                  theme.darkMode ? "dark:bg-slate-800 text-white" : ""
+                }`}
               >
                 <option value="">Choose your salary </option>
                 <option value="Hourly">Hourly</option>
@@ -121,7 +147,9 @@ function CreateJob() {
                 type="text"
                 placeholder="Ex: London"
                 {...register("jobLocation")}
-                className="create-job-input"
+                className={`create-job-input ${
+                  theme.darkMode ? "dark:bg-slate-800 text-white" : ""
+                }`}
               />
             </div>
           </div>
@@ -133,7 +161,9 @@ function CreateJob() {
               <select
                 required
                 {...register("employmentType")}
-                className="create-job-input"
+                className={`create-job-input ${
+                  theme.darkMode ? "dark:bg-slate-800 text-white" : ""
+                }`}
               >
                 <option value="">Choose your experience </option>
                 <option value="Full-time">Full-time</option>
@@ -147,7 +177,9 @@ function CreateJob() {
               <select
                 required
                 {...register("experienceLevel")}
-                className="create-job-input"
+                className={`create-job-input ${
+                  theme.darkMode ? "dark:bg-slate-800 text-white" : ""
+                }`}
               >
                 <option value="">Choose your experience </option>
                 <option value="No Experience">No Experience</option>
@@ -167,8 +199,38 @@ function CreateJob() {
               onChange={setSelectedOption}
               options={options}
               isMulti
-              className="create-job-input py-4"
+              className="create-job-input"
+  
               required
+              styles={{
+                control: (provided) => ({
+                  ...provided,
+                  backgroundColor: theme.darkMode ? "#2D3748" : "white", 
+                  
+                }),
+                menu: (provided) => ({
+                  ...provided,
+                  backgroundColor: theme.darkMode ? "#2D3748" : "white",
+                }),
+                option: (provided, state) => ({
+                  ...provided,
+                  backgroundColor: state.isSelected
+                    ? (theme.darkMode ? "#4A5568" : "#D1D5DB") 
+                    : (theme.darkMode ? "#2D3748" : "white"), 
+                }),
+                multiValue: (provided) => ({
+                  ...provided,
+                  backgroundColor: theme.darkMode ? "#4A5568" : "#D1D5DB", 
+                  color: theme.darkMode ? "white" : "black", 
+                }),
+
+                multiValueLabel: (provided) => ({
+                  ...provided,
+                  color: theme.darkMode ? "white" : "black", 
+                }),
+
+                
+              }}
             />
           </div>
 
@@ -181,7 +243,9 @@ function CreateJob() {
                 type="url"
                 placeholder="Paste your compnay logo URL"
                 {...register("companyLogo")}
-                className="create-job-input"
+                className={`create-job-input ${
+                  theme.darkMode ? "dark:bg-slate-800 text-white" : ""
+                }`}
               />
             </div>
           </div>
@@ -192,7 +256,9 @@ function CreateJob() {
 
             <textarea
               required
-              className="w-full pl-3 py-1.5 focus:outline-none placeholder:text-gray-600"
+              className={`w-full pl-3 py-1.5 focus:outline-none placeholder:text-gray-600 ${
+                theme.darkMode ? "dark:bg-slate-800 text-white" : ""
+              }`}
               rows={6}
               placeholder="Job Description"
               {...register("description")}
@@ -210,5 +276,5 @@ function CreateJob() {
       </div>
     </div>
   );
-}
+};
 export default CreateJob;
