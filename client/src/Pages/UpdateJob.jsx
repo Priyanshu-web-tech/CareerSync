@@ -38,7 +38,6 @@ const UpdateJob = () => {
   const onSubmit = (data) => {
     data.skills = selectedOption;
 
-    console.log(data);
     fetch(`/api/job/update-job/${id}`, {
       method: "PATCH",
       headers: { "content-type": "application/json" },
@@ -46,7 +45,6 @@ const UpdateJob = () => {
     })
       .then((res) => res.json())
       .then((result) => {
-        console.log(result);
         if (result.acknowledged === true) {
           Swal.fire(  {
             text: "Job Updated Successfully",
@@ -72,7 +70,7 @@ const UpdateJob = () => {
     { value: "Redux", label: "Redux" },
   ];
   return (
-    <div className={`max-w-screen-2xl container mx-auto xl:px-24 px-4 ${
+    <div className={`max-w-screen-2xl container mx-auto xl:px-24 px-4 p-3 ${
       theme.darkMode ? "dark:bg-slate-800 text-white" : ""
     }`}>
       {/* form */}

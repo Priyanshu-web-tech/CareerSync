@@ -113,7 +113,6 @@ const Home = () => {
   };
 
   const result = filteredData(jobs, selectedCategory, query);
-  console.log(result);
 
   return (
     <div >

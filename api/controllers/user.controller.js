@@ -2,10 +2,17 @@ import bcryptjs from 'bcryptjs';
 import User from '../models/user.model.js';
 import { errorHandler } from '../utils/error.js';
 
-export const test = (req, res) => {
-  res.json({
-    message: 'Api route is working!',
-  });
+export const getUsers = async (req, res,next) => {
+  try {
+    const users = await User.find();
+    if (!users) {
+      return next(errorHandler(404, "Users not found!"));
+    }
+
+    res.status(200).json(users);
+  } catch (error) {
+    next(error);
+  }
 };
 
 export const updateUser = async (req, res, next) => {

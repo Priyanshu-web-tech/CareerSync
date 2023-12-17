@@ -11,7 +11,7 @@ const Banner = ({ query, handleInputChange }) => {
       initial={{ opacity: 0, y: 0 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className={`max-w-screen-2xl container mx-auto xl:px-24 px-4 md:py-20 py-14 ${
+      className={`  mx-auto xl:px-24 px-4 md:py-20 py-14 ${
         theme.darkMode ? "dark:bg-slate-800 text-white" : ""
       }`}
     >

@@ -1,31 +1,42 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import Swal from "sweetalert2";
+import PageHeader from "../components/PageHeader";
 import { useSelector } from "react-redux";
 
-const MyJobs = () => {
+const AppliedJobs = () => {
+  const theme = useSelector((state) => state.theme);
+  const [applied, setApplied] = useState([]);
   const [jobs, setJobs] = useState([]);
-  const [searchText, setSearchText] = useState("");
   const { currentUser } = useSelector((state) => state.user);
   const [isloading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
-  const theme = useSelector((state) => state.theme);
 
   useEffect(() => {
     setIsLoading(true);
-    fetch(`/api/job/myJobs/${currentUser.email}`)
+    fetch(`/api/apply/appliedJobs/${currentUser._id}`)
       .then((res) => res.json())
       .then((data) => {
-        setJobs(data);
+        setApplied(data);
         setIsLoading(false);
       });
-  }, [searchText]);
+  }, [currentUser._id]);
 
-  //   pagination
+  useEffect(() => {
+    fetch("/api/job/all-jobs")
+      .then((res) => res.json())
+      .then((data) => setJobs(data));
+  }, []);
+
+  // Filter applied jobs
+  const filteredJobs = applied.map((appliedJob) => {
+    const matchingJob = jobs.find((job) => job._id === appliedJob.job);
+    return { ...appliedJob, jobDetails: matchingJob };
+  });
+
+
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentJobs = jobs.slice(indexOfFirstItem, indexOfLastItem);
+  const currentJobs = filteredJobs.slice(indexOfFirstItem, indexOfLastItem);
 
   //   next btn and previous btn
   const nextPage = () => {
@@ -36,53 +47,13 @@ const MyJobs = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
 
-  const handleSearch = () => {
-    const filter = jobs.filter(
-      (job) =>
-        job.jobTitle.toLowerCase().indexOf(searchText.toLowerCase()) !== -1
-    );
-
-    setJobs(filter);
-    setIsLoading(false);
-  };
-
-  const handleDelete = (id) => {
-    fetch(`/api/job/delete/${id}`, {
-      method: "DELETE",
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.acknowledged === true) {
-          setJobs((prevJobs) => prevJobs.filter((job) => job._id !== id));
-          Swal.fire(`Job Deleted successfullly`);
-        }
-      });
-  };
   return (
     <div
-      className={`xl:px-24 px-4 min-h-screen ${
-        theme.darkMode ? "dark:bg-slate-700 text-white" : ""
+      className={`max-w-screen-2xl container mx-auto xl:px-24 px-4 p-3 min-h-screen ${
+        theme.darkMode ? "dark:bg-slate-700 text-neutral-200" : ""
       }`}
     >
-      <div>
-        <h1 className="text-center p-4 text-2xl font-semibold ">All My Jobs</h1>
-        <div className="search-box p-2 text-center mb-2">
-          <input
-            onChange={(e) => setSearchText(e.target.value)}
-            type="text"
-            name="Search"
-            id="Search"
-            className="py-2 pl-3 text-black border focus:outline-none lg:w-6/12 mb-4"
-          />
-
-          <button
-            className="bg-teal-600 text-white font-semibold px-8 py-2 rounded-sm mb-4"
-            onClick={handleSearch}
-          >
-            Search
-          </button>
-        </div>
-      </div>
+      <PageHeader title={"Applied Jobs"} path={"AppliedJobs"} />
 
       {/* Table */}
       <section className="py-1 bg-blueGray-50">
@@ -95,19 +66,9 @@ const MyJobs = () => {
             <div className="rounded-t mb-0 px-4 py-3 border-0">
               <div className="flex flex-wrap items-center">
                 <div className="relative w-full px-4 max-w-full flex-grow flex-1">
-                  <h3 className="font-semibold text-base text-blueGray-700">
-                    All Jobs
+                  <h3 className="font-semibold text-center text-blueGray-700">
+                    Your Applied Jobs
                   </h3>
-                </div>
-                <div className="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
-                  <Link to="/post-job">
-                    <button
-                      className="bg-green-600 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                      type="button"
-                    >
-                      POST A NEW JOB
-                    </button>
-                  </Link>
                 </div>
               </div>
             </div>
@@ -134,10 +95,7 @@ const MyJobs = () => {
                         SALARY
                       </th>
                       <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                        EDIT
-                      </th>
-                      <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                        DELETE
+                        APPLICATION DATE
                       </th>
                     </tr>
                   </thead>
@@ -149,26 +107,17 @@ const MyJobs = () => {
                           {index + 1}
                         </th>
                         <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          {job.jobTitle}
+                          {job.jobDetails ? job.jobDetails.jobTitle : ""}{" "}
                         </td>
                         <td className="border-t-0 px-6 align-center border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          {job.companyName}
+                          {job.jobDetails ? job.jobDetails.companyName : ""}{" "}
                         </td>
                         <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          ${job.minPrice} -${job.maxPrice}
+                          ${job.jobDetails ? job.jobDetails.minPrice : ""} -$
+                          {job.jobDetails ? job.jobDetails.maxPrice : ""}
                         </td>
                         <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          <button className="text-blue underline">
-                            <Link to={`/edit-job/${job?._id}`}>Edit</Link>
-                          </button>
-                        </td>
-                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          <button
-                            onClick={() => handleDelete(job._id)}
-                            className="bg-slate-500 py-2 px-6 text-white rounded-sm"
-                          >
-                            Delete
-                          </button>
+                          {job.appliedDate.slice(0,10)}
                         </td>
                       </tr>
                     ))}
@@ -180,14 +129,14 @@ const MyJobs = () => {
         </div>
 
         {/* pagination */}
-        <div className="flex justify-center text-black space-x-8 mb-8">
+        <div className="flex justify-center  space-x-8 mb-8">
           {currentPage > 1 && (
             <button onClick={prevPage} className="hover:underline">
               Previous
             </button>
           )}
 
-          {indexOfLastItem < jobs.length && (
+          {indexOfLastItem < filteredJobs.length && (
             <button onClick={nextPage} className="hover:underline">
               Next
             </button>
@@ -198,4 +147,4 @@ const MyJobs = () => {
   );
 };
 
-export default MyJobs;
+export default AppliedJobs;

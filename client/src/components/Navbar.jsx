@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { motion } from "framer-motion";
 import { toggleTheme } from "../redux/theme/themeReducer";
 import { FaSun, FaMoon } from "react-icons/fa";
+import { CgProfile } from "react-icons/cg";
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -20,9 +21,10 @@ const Navbar = () => {
     setIsMenuOpen(!isMenuOpen);
   };
   const navItems = [
-    { path: "/", title: "Start a search" },
+    { path: "/", title: "Home" },
     { path: "/my-job", title: "My Jobs" },
-    { path: "/salary", title: "Salary Estimate" },
+    { path: "/jobs-applied", title: "Applied Jobs" },
+    { path: "/responses", title: "Responses" },
     { path: "/post-job", title: "Post a Job" },
   ];
 
@@ -31,7 +33,7 @@ const Navbar = () => {
       initial={{ opacity: 0, y: 0 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className={`max-w-screen-2xl  xl:px-12 px-4 ${
+      className={`  xl:px-12 px-4 ${
         theme.darkMode ? "dark:bg-slate-800 text-white" : ""
       }`}
     >
@@ -41,7 +43,7 @@ const Navbar = () => {
         transition={{ duration: 0.8, delay: 0.2 }}
         className="flex justify-between items-center py-6"
       >
-        {/* left */}
+        {/* LEFT*/}
         <Link
           className="flex items-center gap-1 text-2xl font-semibold "
           to="/"
@@ -71,7 +73,7 @@ const Navbar = () => {
           </motion.span>
         </Link>
 
-        {/* Nav items for large devices (mid part) */}
+        {/* MID */}
         <ul className="hidden lg:flex gap-8">
           {navItems.map(({ path, title }) => (
             <motion.li
@@ -89,7 +91,7 @@ const Navbar = () => {
           ))}
         </ul>
 
-        {/* Sign up and login button (end part) */}
+        {/* END*/}
         <div className="text-base  font-medium space-x-5 hidden lg:flex items-center">
           <button
             className="flex items-center justify-center bg-gray-200 rounded-full p-2 focus:outline-none"
@@ -102,20 +104,18 @@ const Navbar = () => {
             )}
           </button>
 
-          <Link className="hover:text-teal-600" to="/">
-            Home
-          </Link>
-          <Link className="hover:text-teal-600" to="/about">
-            About
-          </Link>
           <Link to="/profile">
             {currentUser ? (
-              <motion.img
-                whileHover={{ scale: 1.1 }}
-                className="rounded-full h-10 w-10 object-cover"
-                src={currentUser.avatar}
-                alt="User Avatar"
-              />
+              currentUser.avatar ? (
+                <motion.img
+                  whileHover={{ scale: 1.1 }}
+                  className="rounded-full h-10 w-10 object-cover"
+                  src={currentUser.avatar}
+                  alt="User Avatar"
+                />
+              ) : (
+                <CgProfile size={30} className="text-teal-600" />
+              )
             ) : (
               <motion.span
                 whileHover={{ scale: 1.1 }}
@@ -128,16 +128,49 @@ const Navbar = () => {
         </div>
 
         {/* Mobile menu */}
-        <div className="lg:hidden block">
+        <div className="lg:hidden flex items-center space-x-4">
+          <button
+            className="flex items-center justify-center bg-gray-200 rounded-full p-2 focus:outline-none"
+            onClick={handleToggle}
+          >
+            {theme.darkMode ? (
+              <FaSun size={18} color="teal" />
+            ) : (
+              <FaMoon size={18} color="teal" />
+            )}
+          </button>
+
+          <Link to="/profile">
+            {currentUser ? (
+              currentUser.avatar ? (
+                <motion.img
+                  whileHover={{ scale: 1.1 }}
+                  className="rounded-full h-10 w-10 object-cover"
+                  src={currentUser.avatar}
+                  alt="User Avatar"
+                />
+              ) : (
+                <CgProfile size={30} className="text-teal-600" />
+              )
+            ) : (
+              <motion.span
+                whileHover={{ scale: 1.1 }}
+                className="bg-teal-600 hover:opacity-90 text-white p-1 border rounded"
+              >
+                Sign in
+              </motion.span>
+            )}
+          </Link>
+
           <motion.button
             className="focus:outline-none"
             whileHover={{ scale: 1.1 }}
             onClick={handleMenuToggle}
           >
             {isMenuOpen ? (
-              <FaXmark className="w-5 h-5 text-primary" />
+              <FaXmark className="w-5 h-5 " />
             ) : (
-              <FaBarsStaggered className="w-5 h-5 text-primary" />
+              <FaBarsStaggered className="w-5 h-5 " />
             )}
           </motion.button>
         </div>
@@ -154,7 +187,7 @@ const Navbar = () => {
           {navItems.map(({ path, title }) => (
             <motion.li
               key={path}
-              className="text-base py-1"
+              className="text-base py-1 "
               whileHover={{ scale: 1.1 }}
             >
               <NavLink
@@ -165,44 +198,6 @@ const Navbar = () => {
               </NavLink>
             </motion.li>
           ))}
-
-          <motion.li whileHover={{ scale: 1.1 }}>
-            {" "}
-            <Link className="hover:text-teal-600 text-base py-1" to="/">
-              Home
-            </Link>
-          </motion.li>
-          <motion.li whileHover={{ scale: 1.1 }}>
-            {" "}
-            <Link className="hover:text-teal-600 text-base py-1" to="/about">
-              About
-            </Link>
-          </motion.li>
-          <li>
-            <button
-              className="flex items-center justify-center bg-gray-200 rounded-full p-2 focus:outline-none"
-              onClick={handleToggle}
-            >
-              {theme.darkMode ? (
-                <FaSun size={18} color="teal" />
-              ) : (
-                <FaMoon size={18} color="teal" />
-              )}
-            </button>{" "}
-          </li>
-          <motion.li className="py-1" whileHover={{ scale: 1.1 }}>
-            <Link to="/profile">
-              {currentUser ? (
-                <motion.img
-                  className="rounded-full h-10 w-10 object-cover"
-                  src={currentUser.avatar}
-                  alt="User Avatar"
-                />
-              ) : (
-                <span className="text-base py-1">Sign in</span>
-              )}
-            </Link>
-          </motion.li>
         </ul>
       </motion.div>
     </motion.header>

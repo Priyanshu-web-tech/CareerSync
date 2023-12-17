@@ -18,6 +18,8 @@ import {
   deleteUserStart,
   deleteUserSuccess,
   signOutUserStart,
+  signOutUserSuccess,
+  signOutUserFailure,
 } from "../redux/user/userSlice";
 
 export default function Profile() {
@@ -29,6 +31,8 @@ export default function Profile() {
   const [formData, setFormData] = useState({});
   const [updateSuccess, setUpdateSuccess] = useState(false);
   const theme = useSelector((state) => state.theme);
+  const defaultAvatarURL =
+    "https://static.thenounproject.com/png/363640-200.png";
 
   const dispatch = useDispatch();
 
@@ -102,7 +106,6 @@ export default function Profile() {
     }
   };
 
-
   const handleDeleteUser = () => {
     Swal.fire({
       title: "Are you sure?",
@@ -114,8 +117,6 @@ export default function Profile() {
       confirmButtonText: "Yes, delete it!",
       background: `${theme.darkMode ? "#1e293b" : ""}`,
       color: `${theme.darkMode ? "white" : ""}`,
-
-
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
@@ -131,7 +132,7 @@ export default function Profile() {
               title: "Error",
               text: data.message,
               background: `${theme.darkMode ? "#1e293b" : ""}`,
-    color: `${theme.darkMode ? "white" : ""}`,
+              color: `${theme.darkMode ? "white" : ""}`,
             });
             return;
           }
@@ -141,7 +142,7 @@ export default function Profile() {
             title: "Success",
             text: "User deleted successfully!",
             background: `${theme.darkMode ? "#1e293b" : ""}`,
-    color: `${theme.darkMode ? "white" : ""}`,
+            color: `${theme.darkMode ? "white" : ""}`,
           });
         } catch (error) {
           dispatch(deleteUserFailure(error.message));
@@ -150,7 +151,7 @@ export default function Profile() {
             title: "Error",
             text: "Error in deleting user",
             background: `${theme.darkMode ? "#1e293b" : ""}`,
-    color: `${theme.darkMode ? "white" : ""}`,
+            color: `${theme.darkMode ? "white" : ""}`,
           });
         }
       }
@@ -163,125 +164,128 @@ export default function Profile() {
       const res = await fetch("/api/auth/signout");
       const data = await res.json();
       if (data.success === false) {
-        dispatch(deleteUserFailure(data.message));
+        dispatch(signOutUserFailure(data.message));
         return;
       }
-      dispatch(deleteUserSuccess(data));
+      dispatch(signOutUserSuccess(data));
     } catch (error) {
-      dispatch(deleteUserFailure(data.message));
+      dispatch(signOutUserFailure(data.message));
     }
   };
 
   return (
-    <div className={`flex items-center justify-center min-h-screen  ${
-      theme.darkMode ? "dark:bg-slate-700 text-white" : ""
-    }`}>
-
+    <div
+      className={`flex items-center justify-center min-h-screen  ${
+        theme.darkMode ? "dark:bg-slate-700 text-white" : ""
+      }`}
+    >
       <div className="p-8 max-w-md w-full">
-      <h1 className="text-3xl font-semibold text-center mb-6">Profile</h1>
-      <form
-        onSubmit={handleSubmit}
-        className="flex flex-col gap-4 items-center"
-      >
-        <div className="relative">
+        <h1 className="text-3xl font-semibold text-center mb-6">Profile</h1>
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col gap-4 items-center"
+        >
+          <div className="relative">
+            <input
+              onChange={(e) => setFile(e.target.files[0])}
+              type="file"
+              ref={fileRef}
+              hidden
+              accept="image/*"
+            />
+            <img
+              onClick={() => fileRef.current.click()}
+              src={formData.avatar || currentUser.avatar || defaultAvatarURL}
+              alt="profile"
+              className="rounded-full h-24 w-24 object-cover cursor-pointer"
+            />
+            <label className="absolute bottom-0 right-0 rounded-full bg-teal-700  px-2 py-1 cursor-pointer">
+              <MdModeEditOutline />
+            </label>
+          </div>
+
+          <p className="text-sm self-center">
+            {fileUploadError ? (
+              <span className="text-slate-500">
+                Error Image upload (image must be less than 2 mb)
+              </span>
+            ) : filePerc > 0 && filePerc < 100 ? (
+              <span className="text-teal-700">{`Uploading ${filePerc}%`}</span>
+            ) : filePerc === 100 ? (
+              <span className="text-teal-700">
+                Image successfully uploaded!
+              </span>
+            ) : (
+              ""
+            )}
+          </p>
+
           <input
-            onChange={(e) => setFile(e.target.files[0])}
-            type="file"
-            ref={fileRef}
-            hidden
-            accept="image/*"
+            type="text"
+            placeholder="name"
+            defaultValue={currentUser.name}
+            id="name"
+            className="border p-3  text-black rounded-lg w-full"
+            onChange={handleChange}
           />
-          <img
-            onClick={() => fileRef.current.click()}
-            src={formData.avatar || currentUser.avatar}
-            alt="profile"
-            className="rounded-full h-24 w-24 object-cover cursor-pointer border-4 "
+
+          <input
+            type="text"
+            placeholder="username"
+            defaultValue={currentUser.username}
+            id="username"
+            className="border p-3 text-black rounded-lg w-full"
+            onChange={handleChange}
           />
-          <label className="absolute bottom-0 right-0 rounded-full bg-teal-700 text-white px-2 py-1 cursor-pointer">
-            <MdModeEditOutline />
-          </label>
+          <input
+            type="email"
+            placeholder="email"
+            id="email"
+            defaultValue={currentUser.email}
+            className="border p-3  text-black   rounded-lg w-full"
+            onChange={handleChange}
+          />
+          <input
+            type="password"
+            placeholder="password"
+            onChange={handleChange}
+            id="password"
+            className="border p-3  text-black  rounded-lg w-full"
+          />
+
+          <input
+            type="text"
+            placeholder="resume link"
+            defaultValue={currentUser.resume}
+            id="resume"
+            className="border p-3   text-black  rounded-lg w-full"
+            onChange={handleChange}
+          />
+          <button
+            disabled={loading}
+            className="bg-teal-700 w-full text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80"
+          >
+            {loading ? "Loading..." : "Update"}
+          </button>
+        </form>
+
+        <div className="flex flex-col gap-3 mt-5">
+          <button
+            onClick={handleDeleteUser}
+            className="bg-slate-500 text-white rounded-lg py-3 uppercase hover:opacity-95"
+          >
+            Delete Account
+          </button>
+          <button
+            onClick={handleSignOut}
+            className="bg-slate-500 text-white rounded-lg py-3 uppercase hover:opacity-95"
+          >
+            Sign Out
+          </button>
         </div>
 
-        <p className="text-sm self-center">
-          {fileUploadError ? (
-            <span className="text-slate-500">
-              Error Image upload (image must be less than 2 mb)
-            </span>
-          ) : filePerc > 0 && filePerc < 100 ? (
-            <span className="text-teal-700">{`Uploading ${filePerc}%`}</span>
-          ) : filePerc === 100 ? (
-            <span className="text-teal-700">Image successfully uploaded!</span>
-          ) : (
-            ""
-          )}
-        </p>
-
-        <input
-          type="text"
-          placeholder="name"
-          defaultValue={currentUser.name}
-          id="name"
-          className="border p-3  text-black rounded-lg w-full"
-          onChange={handleChange}
-        />
-
-        <input
-          type="text"
-          placeholder="username"
-          defaultValue={currentUser.username}
-          id="username"
-          className="border p-3 text-black rounded-lg w-full"
-          onChange={handleChange}
-        />
-        <input
-          type="email"
-          placeholder="email"
-          id="email"
-          defaultValue={currentUser.email}
-          className="border p-3  text-black   rounded-lg w-full"
-          onChange={handleChange}
-        />
-        <input
-          type="password"
-          placeholder="password"
-          onChange={handleChange}
-          id="password"
-          className="border p-3  text-black  rounded-lg w-full"
-        />
-
-        <input
-          type="text"
-          placeholder="resume link"
-          defaultValue={currentUser.resume}
-          id="resume"
-          className="border p-3   text-black  rounded-lg w-full"
-          onChange={handleChange}
-        />
-        <button
-          disabled={loading}
-          className="bg-teal-700 w-full text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80"
-        >
-          {loading ? "Loading..." : "Update"}
-        </button>
-      </form>
-
-      <div className="flex flex-col gap-3 mt-5">
-        <button
-          onClick={handleDeleteUser}
-          className="bg-slate-500 text-white rounded-lg py-3 uppercase hover:opacity-95"
-        >
-          Delete Account
-        </button>
-        <button
-          onClick={handleSignOut}
-          className="bg-slate-500 text-white rounded-lg py-3 uppercase hover:opacity-95"
-        >
-          Sign Out
-        </button>
-      </div>
-
-      {/* Display error messages */}
-      <p className="text-slate-500 mt-5">{error ? error : ""}</p>
+        {/* Display error messages */}
+        <p className="text-slate-500 mt-5">{error ? error : ""}</p>
       </div>
     </div>
   );

@@ -20,7 +20,6 @@ const CreateJob = () => {
   const onSubmit = (data) => {
     data.skills = selectedOption;
     data.postedBy = currentUser.email;
-    console.log(data);
     fetch("/api/job/post-job", {
       method: "POST",
       headers: { "content-type": "application/json" },
@@ -28,7 +27,6 @@ const CreateJob = () => {
     })
       .then((res) => res.json())
       .then((result) => {
-        console.log(result);
         if (result.acknowledged === true) {
           Swal.fire(  {
             text: "Job Created Successfully",
@@ -56,7 +54,7 @@ const CreateJob = () => {
 
   return (
     <div
-      className={`max-w-screen-2xl container mx-auto xl:px-24 px-4 ${
+      className={`max-w-screen-2xl container mx-auto xl:px-24 px-4 p-3 ${
         theme.darkMode ? "dark:bg-slate-800 text-white" : ""
       }`}
     >

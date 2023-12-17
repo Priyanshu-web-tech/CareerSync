@@ -3,7 +3,6 @@ import App from "../App";
 import Home from "../Pages/Home";
 import CreateJob from "../Pages/CreateJob";
 import MyJobs from "../Pages/MyJobs";
-import SalaryPage from "../Pages/SalaryPage";
 import UpdateJob from "../Pages/UpdateJob";
 import Signin from "../Pages/Signin";
 import Signup from "../Pages/Signup";
@@ -11,6 +10,8 @@ import PrivateRoute from "../components/PrivateRoute";
 import JobDetails from "../Pages/JobDetails";
 import Profile from "../Pages/Profile";
 import About from "../Pages/About";
+import AppliedJobs from "../Pages/AppliedJobs";
+import Responses from "../Pages/Responses";
 
 const router = createBrowserRouter([
   {
@@ -22,10 +23,7 @@ const router = createBrowserRouter([
         element: <Home />,
       },
 
-      {
-        path: "/salary",
-        element: <SalaryPage />,
-      },
+    
 
       {
         path: "/job/:id",
@@ -63,6 +61,14 @@ const router = createBrowserRouter([
           {
             path: "/my-job",
             element: <MyJobs />,
+          },
+          {
+            path: "/jobs-applied",
+            element: <AppliedJobs />,
+          },
+          {
+            path: "/responses",
+            element: <Responses />,
           },
         ],
       },

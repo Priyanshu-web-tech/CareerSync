@@ -27,17 +27,32 @@ const JobDetails = () => {
       .then((data) => setJob(data));
   }, [id]);
 
+  if(currentUser){
   useEffect(() => {
     fetch(`/api/apply/appliedJobs/${currentUser._id}`)
       .then((res) => res.json())
       .then((data) => setApplied(data));
   }, [currentUser._id]);
 
+}
+
   const isAlreadyApplied = applied.some(
     (application) => application.job === id
   );
 
   const handleApply = async () => {
+
+    if(!currentUser)
+    {
+      Swal.fire({
+        text: "Sign in to apply for jobs",
+        confirmButtonColor: "teal",
+        background: `${theme.darkMode ? "#1e293b" : ""}`,
+        color: `${theme.darkMode ? "white" : ""}`,
+      });
+
+      return ;
+    }
     const application = {
       user: currentUser._id,
       job: id,
@@ -53,7 +68,6 @@ const JobDetails = () => {
       return; // Exit the function
     }
 
-    console.log(application);
 
     fetch("/api/apply/apply-job", {
       method: "POST",
@@ -62,7 +76,6 @@ const JobDetails = () => {
     })
       .then((res) => res.json())
       .then((result) => {
-        console.log(result);
         if (result.acknowledged === true) {
           Swal.fire({
             text: "Applied Successfully",
@@ -96,8 +109,8 @@ const JobDetails = () => {
   };
   return (
     <div
-      className={`max-w-screen-2xl container mx-auto xl:px-24 px-4 ${
-        theme.darkMode ? "dark:bg-slate-800 text-white" : ""
+      className={`max-w-screen-2xl container mx-auto xl:px-24 px-4 p-10 ${
+        theme.darkMode ? "dark:bg-slate-700 text-white" : ""
       }`}
     >
       <PageHeader title={"Single Job Page"} path={"single job"} />
