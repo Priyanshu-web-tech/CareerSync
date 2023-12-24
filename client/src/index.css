@@ -155,5 +155,24 @@ li {
 }
 
 .create-job-input{
-  @apply block w-full flex-1  py-1.5 pl-3  placeholder:text-gray-400 focus:outline-none sm:text-sm sm:leading-6
+  @apply block w-full flex-1  py-1.5 pl-3  placeholder:text-gray-400 focus:outline-none sm:text-sm sm:leading-6;
 }
+
+
+::-webkit-scrollbar {
+  width: 6px;
+  background-color:  #94a3b8;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #B8B8C2;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #828284;
+} 

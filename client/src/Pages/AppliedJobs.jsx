@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PageHeader from "../components/PageHeader";
 import { useSelector } from "react-redux";
+import TableSkeleton from "../skeletonComponents/TableSkeleton";
 
 const AppliedJobs = () => {
   const theme = useSelector((state) => state.theme);
@@ -75,9 +76,7 @@ const AppliedJobs = () => {
 
             <div className="block w-full overflow-x-auto">
               {isloading ? (
-                <div className="flex items-center justify-center h-20">
-                  <p>Loading......</p>
-                </div>
+                <TableSkeleton/>
               ) : (
                 <table className="items-center bg-transparent w-full border-collapse ">
                   <thead>

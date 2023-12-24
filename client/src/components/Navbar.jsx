@@ -119,7 +119,7 @@ const Navbar = () => {
             ) : (
               <motion.span
                 whileHover={{ scale: 1.1 }}
-                className="bg-teal-600 hover:opacity-90 text-white py-2 px-5 border rounded"
+                className="bg-teal-600 hover:opacity-90 text-white py-2 px-2 border rounded"
               >
                 Sign in
               </motion.span>
@@ -155,7 +155,7 @@ const Navbar = () => {
             ) : (
               <motion.span
                 whileHover={{ scale: 1.1 }}
-                className="bg-teal-600 hover:opacity-90 text-white p-1 border rounded"
+                className="bg-teal-600 hover:opacity-90 text-white p-0.5 border rounded"
               >
                 Sign in
               </motion.span>

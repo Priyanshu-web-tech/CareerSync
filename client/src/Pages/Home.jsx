@@ -4,16 +4,15 @@ import Card from "../components/Card";
 import Jobs from "./Jobs";
 import Sidebar from "../components/Sidebar/Sidebar";
 import { useSelector } from "react-redux";
+import CardSkeleton from "../skeletonComponents/CardSkeleton";
+import Accordion from "../components/Accordion";
 
 const Home = () => {
   const theme = useSelector((state) => state.theme);
-
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [jobs, setJobs] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
   const [currentPage, setCurrentPage] = useState(1);
-
   const itemsPerPage = 6;
 
   useEffect(() => {
@@ -115,20 +114,40 @@ const Home = () => {
   const result = filteredData(jobs, selectedCategory, query);
 
   return (
-    <div >
+    <div>
       <Banner query={query} handleInputChange={handleInputChange} />
 
       {/* Main content */}
-      <div className={` md:grid grid-cols-3 gap-8 lg:px-24 px-4 py-12 ${theme.darkMode ? "dark:bg-slate-700 text-white" : "bg-[#FAFAFA] text-black"}`}>
-        {/* Left side */}
-        <div className={`p-4 rounded ${theme.darkMode ? "dark:bg-slate-800" : "bg-white"} `}>
-          <Sidebar handleChange={handleChange} handleClick={handleClick} />
+      <div
+        className={` md:grid grid-cols-3 gap-8 lg:px-24 px-4 py-12 ${
+          theme.darkMode
+            ? "dark:bg-slate-700 text-white"
+            : "bg-[#FAFAFA] text-black"
+        }`}
+      >
+        {/* Filters */}
+        <div
+          className={`p-4 rounded ${
+            theme.darkMode ? "dark:bg-slate-800" : "bg-white"
+          } `}
+        >
+          <div className="hidden md:block">
+            <Sidebar handleChange={handleChange} handleClick={handleClick} />
+          </div>
+
+          <div className="block md:hidden ">
+            <Accordion handleChange={handleChange} handleClick={handleClick} />
+          </div>
         </div>
 
         {/* Job Cards */}
-        <div className={`col-span-2 p-4 rounded-sm ${theme.darkMode ? "dark:bg-slate-800" : "bg-white"} `}>
+        <div
+          className={`col-span-2 p-4 rounded-sm ${
+            theme.darkMode ? "dark:bg-slate-800" : "bg-white"
+          } `}
+        >
           {isLoading ? (
-            <p className="font-medium">Loading...</p>
+            <CardSkeleton />
           ) : result.length > 0 ? (
             <Jobs result={result} />
           ) : (

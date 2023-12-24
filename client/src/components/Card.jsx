@@ -4,9 +4,7 @@ import { FiCalendar, FiClock, FiDollarSign, FiMapPin } from "react-icons/fi";
 import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
 
-
 function Card({ data }) {
-
   const theme = useSelector((state) => state.theme);
 
   const {
@@ -67,16 +65,16 @@ function Card({ data }) {
             transition={{ delay: 0.6 }}
           >
             <motion.span className="flex items-center gap-2">
-              <FiMapPin  /> {jobLocation}
+              <FiMapPin /> {jobLocation}
             </motion.span>
             <motion.span className="flex items-center gap-2">
-              <FiClock  /> {employmentType}
+              <FiClock /> {employmentType}
             </motion.span>
             <motion.span className="flex items-center gap-2">
-              <FiDollarSign  /> {minPrice}-{maxPrice}k
+              <FiDollarSign /> {minPrice}-{maxPrice}k
             </motion.span>
             <motion.span className="flex items-center gap-2">
-              <FiCalendar  /> {postingDate}
+              <FiCalendar /> {postingDate}
             </motion.span>
           </motion.div>
 
@@ -86,7 +84,7 @@ function Card({ data }) {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.8 }}
           >
-            {description.slice(0,100)}
+            {description.slice(0, 100)}
             <span className="font-extrabold">......</span>
           </motion.p>
         </motion.div>

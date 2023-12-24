@@ -180,11 +180,13 @@ export default function Profile() {
       }`}
     >
       <div className="p-8 max-w-md w-full">
-        <h1 className="text-3xl font-semibold text-center mb-6">Profile</h1>
+        <h1 className="text-4xl font-semibold text-center mb-4">Profile</h1>
+
         <form
           onSubmit={handleSubmit}
           className="flex flex-col gap-4 items-center"
         >
+          {/* Profile image */}
           <div className="relative">
             <input
               onChange={(e) => setFile(e.target.files[0])}
@@ -204,6 +206,7 @@ export default function Profile() {
             </label>
           </div>
 
+          {/* File upload status message */}
           <p className="text-sm self-center">
             {fileUploadError ? (
               <span className="text-slate-500">
@@ -220,56 +223,74 @@ export default function Profile() {
             )}
           </p>
 
-          <input
-            type="text"
-            placeholder="name"
-            defaultValue={currentUser.name}
-            id="name"
-            className="border p-3  text-black rounded-lg w-full"
-            onChange={handleChange}
-          />
+          {/* Input fields  */}
+          <div className="flex flex-col gap-2 w-full">
+            <label htmlFor="name" className="text-sm font-semibold">
+              Name
+            </label>
+            <input
+              type="text"
+              placeholder="name"
+              defaultValue={currentUser.name}
+              id="name"
+              className="border p-3  text-black rounded-lg w-full"
+              onChange={handleChange}
+            />
 
-          <input
-            type="text"
-            placeholder="username"
-            defaultValue={currentUser.username}
-            id="username"
-            className="border p-3 text-black rounded-lg w-full"
-            onChange={handleChange}
-          />
-          <input
-            type="email"
-            placeholder="email"
-            id="email"
-            defaultValue={currentUser.email}
-            className="border p-3  text-black   rounded-lg w-full"
-            onChange={handleChange}
-          />
-          <input
-            type="password"
-            placeholder="password"
-            onChange={handleChange}
-            id="password"
-            className="border p-3  text-black  rounded-lg w-full"
-          />
+            <label htmlFor="username" className="text-sm font-semibold">
+              Username
+            </label>
+            <input
+              type="text"
+              placeholder="username"
+              defaultValue={currentUser.username}
+              id="username"
+              className="border p-3 text-black rounded-lg w-full"
+              onChange={handleChange}
+            />
 
-          <input
-            type="text"
-            placeholder="resume link"
-            defaultValue={currentUser.resume}
-            id="resume"
-            className="border p-3   text-black  rounded-lg w-full"
-            onChange={handleChange}
-          />
-          <button
-            disabled={loading}
-            className="bg-teal-700 w-full text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80"
-          >
-            {loading ? "Loading..." : "Update"}
-          </button>
+            <label htmlFor="email" className="text-sm font-semibold">
+              E-mail
+            </label>
+
+            <input
+              type="email"
+              placeholder="email"
+              id="email"
+              defaultValue={currentUser.email}
+              className="border p-3  text-black   rounded-lg w-full"
+              onChange={handleChange}
+            />
+
+            <label htmlFor="password" className="text-sm font-semibold">
+              Password
+            </label>
+            <input
+              type="password"
+              placeholder="password"
+              onChange={handleChange}
+              id="password"
+              className="border p-3  text-black  rounded-lg w-full"
+            />
+
+            <label htmlFor="resume" className="text-sm font-semibold">
+              Resume Link
+            </label>
+            <input
+              type="text"
+              placeholder="resume link"
+              defaultValue={currentUser.resume}
+              id="resume"
+              className="border p-3   text-black  rounded-lg w-full"
+              onChange={handleChange}
+            />
+          </div>
+
+         
         </form>
 
-        <div className="flex flex-col gap-3 mt-5">
+        {/* Sign out and Delete account button  */}
+        <div className="flex flex-col gap-3 mt-3">
           <button
             onClick={handleDeleteUser}
             className="bg-slate-500 text-white rounded-lg py-3 uppercase hover:opacity-95"

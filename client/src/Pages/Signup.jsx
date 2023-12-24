@@ -1,14 +1,27 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import OAuth from "../components/OAuth";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { RiEyeFill, RiEyeOffFill } from "react-icons/ri"; 
+import {
+  signInStart,
+  signInFailure,
+  signInSuccess,
+} from "../redux/user/userSlice";
 
 export default function SignUp() {
   const theme = useSelector((state) => state.theme);
   const [formData, setFormData] = useState({});
+  const [signInData, setsignInData] = useState({});
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [showPassword, setShowPassword] = useState(false);
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -27,7 +40,7 @@ export default function SignUp() {
         body: JSON.stringify(formData),
       });
       const data = await res.json();
-     
+
       if (data.success === false) {
         setLoading(false);
         setError(data.message);
@@ -35,7 +48,33 @@ export default function SignUp() {
       }
       setLoading(false);
       setError(null);
-      navigate("/sign-in");
+      signInData.email = formData.email;
+      signInData.password = formData.password;
+
+      try {
+        dispatch(signInStart());
+
+        const res = await fetch("/api/auth/signin", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(signInData),
+        });
+        const data = await res.json();
+
+        if (data.success === false) {
+          dispatch(signInFailure(data.message));
+          return;
+        }
+
+        dispatch(signInSuccess(data));
+
+        navigate("/");
+      } catch (error) {
+        dispatch(signInFailure(data.message));
+        navigate("/sign-in");
+      }
     } catch (error) {
       setLoading(false);
       setError(error.message);
@@ -77,13 +116,29 @@ export default function SignUp() {
             id="email"
             onChange={handleChange}
           />
-          <input
-            type="password"
-            placeholder="password"
-            className="border p-3 text-black  rounded-lg"
-            id="password"
-            onChange={handleChange}
-          />
+
+          <div className="relative">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="password"
+              className="border w-full p-3 text-black  rounded-lg"
+              id="password"
+              onChange={handleChange}
+            />
+
+            <button
+              type="button"
+              onClick={togglePasswordVisibility}
+              className="absolute  inset-y-0 right-0 px-3 py-2 text-teal-800 focus:outline-none"
+            >
+              {showPassword ? (
+                <RiEyeOffFill size={24} />
+              ) : (
+                <RiEyeFill size={24} />
+              )}{" "}
+              {/* Use React Icons */}
+            </button>
+          </div>
 
           <button
             disabled={loading}

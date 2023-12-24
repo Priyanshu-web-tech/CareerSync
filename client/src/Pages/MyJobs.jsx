@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useSelector } from "react-redux";
+import TableSkeleton from "../skeletonComponents/TableSkeleton";
 
 const MyJobs = () => {
   const [jobs, setJobs] = useState([]);
@@ -114,9 +115,7 @@ const MyJobs = () => {
 
             <div className="block w-full overflow-x-auto">
               {isloading ? (
-                <div className="flex items-center justify-center h-20">
-                  <p>Loading......</p>
-                </div>
+                <TableSkeleton />
               ) : (
                 <table className="items-center bg-transparent w-full border-collapse ">
                   <thead>
