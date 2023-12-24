@@ -30,16 +30,16 @@ const Navbar = () => {
 
   return (
     <motion.header
-      initial={{ opacity: 0, y: 0 }}
-      animate={{ opacity: 1, y: 0 }}
+      initial={{  y: 0 }}
+      animate={{  y: 1 }}
       transition={{ duration: 0.5 }}
       className={`  xl:px-12 px-4 ${
         theme.darkMode ? "dark:bg-slate-800 text-white" : ""
       }`}
     >
       <motion.nav
-        initial={{ opacity: 0, y: 0 }}
-        animate={{ opacity: 1, y: 0 }}
+        initial={{  y: -10 }}
+        animate={{  y: 1 }}
         transition={{ duration: 0.8, delay: 0.2 }}
         className="flex justify-between items-center py-6"
       >
@@ -49,8 +49,8 @@ const Navbar = () => {
           to="/"
         >
           <motion.svg
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: 1, scale: 1 }}
+            initial={{  scale: 0 }}
+            animate={{  scale: 1 }}
             transition={{ duration: 1 }}
             xmlns="http://www.w3.org/2000/svg"
             width="50"
@@ -178,7 +178,7 @@ const Navbar = () => {
 
       {/* Nav items for mobile */}
       <motion.div
-        initial={{ opacity: 0, y: 0 }}
+        initial={{  y: 0 }}
         animate={{ opacity: isMenuOpen ? 1 : 0, y: isMenuOpen ? 0 : -30 }}
         transition={{ duration: 0.5 }}
         className={`px-4  rounded-sm lg:hidden ${isMenuOpen ? "" : "hidden"} `}

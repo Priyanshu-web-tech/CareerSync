@@ -4,6 +4,8 @@ import { useForm } from "react-hook-form";
 import CreatableSelect from "react-select/creatable";
 import Swal from "sweetalert2";
 import { useSelector } from "react-redux";
+import { motion } from "framer-motion";
+
 
 
 const UpdateJob = () => {
@@ -36,8 +38,13 @@ const UpdateJob = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    data.skills = selectedOption;
-
+    if (selectedOption !== null) {
+      data.skills = selectedOption;
+    } else {
+      // Retain the existing skills data in 'data' object
+      data.skills = skills;
+    }
+  
     fetch(`/api/job/update-job/${id}`, {
       method: "PATCH",
       headers: { "content-type": "application/json" },
@@ -70,7 +77,10 @@ const UpdateJob = () => {
     { value: "Redux", label: "Redux" },
   ];
   return (
-    <div className={`max-w-screen-2xl container mx-auto xl:px-24 px-4 p-3 ${
+    <motion.div
+    initial={{  y: -20 }}
+    animate={{  y: 0 }}
+    className={`max-w-screen-2xl container mx-auto xl:px-24 px-4 p-3 ${
       theme.darkMode ? "dark:bg-slate-800 text-white" : ""
     }`}>
       {/* form */}
@@ -288,7 +298,7 @@ const UpdateJob = () => {
           </div>
         </form>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

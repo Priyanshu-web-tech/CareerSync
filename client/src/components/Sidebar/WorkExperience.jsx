@@ -10,8 +10,8 @@ function WorkExperience({handleChange}) {
       <label className="sidebar-label-container">
         <input
           type="radio"
-          name="test"
-          id="test"
+          name="workExperience"
+          id="workExperience"
           value=""
           onChange={handleChange}
         />
@@ -22,14 +22,14 @@ function WorkExperience({handleChange}) {
         handleChange={handleChange}
         value="internship"
         title="Internship"
-        name="test"
+        name="workExperience"
       />
 
       <InputField
         handleChange={handleChange}
         value="work remotely"
         title="Work remotely"
-        name="test"
+        name="workExperience"
       />
 
       

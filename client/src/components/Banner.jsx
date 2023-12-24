@@ -8,8 +8,8 @@ const Banner = ({ query, handleInputChange }) => {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 0 }}
-      animate={{ opacity: 1, y: 0 }}
+      initial={{  y: 0 }}
+      animate={{  y: 0 }}
       transition={{ duration: 0.5 }}
       className={`  mx-auto xl:px-24 px-4 md:py-20 py-14 ${
         theme.darkMode ? "dark:bg-slate-800 text-white" : ""
@@ -35,8 +35,8 @@ const Banner = ({ query, handleInputChange }) => {
       </motion.p>
 
       <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
+        initial={{  scale: 0.8 }}
+        animate={{  scale: 1 }}
         transition={{ duration: 1.5 }}
         className="flex justify-center items-center md:flex-row flex-col md:gap-0 gap-4"
       >

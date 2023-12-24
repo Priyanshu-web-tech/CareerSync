@@ -10,8 +10,8 @@ function EmplomentType({ handleChange }) {
         <label className="sidebar-label-container">
           <input
             type="radio"
-            name="test"
-            id="test"
+            name="employmentType"
+            id="employmentType"
             value=""
             onChange={handleChange}
           />
@@ -22,21 +22,21 @@ function EmplomentType({ handleChange }) {
           handleChange={handleChange}
           value="full-time"
           title="Full-time"
-          name="test"
+          name="employmentType"
         />
 
         <InputField
           handleChange={handleChange}
           value="temporary"
           title="Temporary"
-          name="test"
+          name="employmentType"
         />
 
         <InputField
           handleChange={handleChange}
           value="part-time"
           title="Part-time"
-          name="test"
+          name="employmentType"
         />
       </div>
     </div>

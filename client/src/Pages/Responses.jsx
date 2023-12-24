@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import PageHeader from "../components/PageHeader";
 import { useSelector } from "react-redux";
+import { motion } from "framer-motion";
+
+
 import TableSkeleton from "../skeletonComponents/TableSkeleton";
 
 const Responses = () => {
@@ -61,7 +64,11 @@ const Responses = () => {
   };
 
   return (
-    <div
+    <motion.div
+    initial={{  y: -50 }}
+      animate={{  y: 0 }}
+      exit={{  y: -50 }}
+      transition={{ duration: 0.5 }}
       className={`max-w-screen-2xl container mx-auto xl:px-24 px-4 p-3 min-h-screen ${
         theme.darkMode ? "dark:bg-slate-700 text-neutral-200" : ""
       }`}
@@ -184,7 +191,7 @@ const Responses = () => {
           )}
         </div>
       </section>
-    </div>
+    </motion.div>
   );
 };
 

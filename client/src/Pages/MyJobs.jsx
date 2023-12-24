@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import Swal from "sweetalert2";
 import { useSelector } from "react-redux";
 import TableSkeleton from "../skeletonComponents/TableSkeleton";
@@ -60,12 +61,21 @@ const MyJobs = () => {
       });
   };
   return (
-    <div
+    <motion.div
+      initial={{ y: -50 }} // Initial animation when component mounts
+      animate={{ y: 0 }} // Animation when component is visible
+      exit={{ y: -50 }} // Animation when component exits
+      transition={{ duration: 0.5 }} // Animation duration
       className={`xl:px-24 px-4 min-h-screen ${
         theme.darkMode ? "dark:bg-slate-700 text-white" : ""
       }`}
     >
-      <div>
+      <motion.div
+              initial={{ scale: 0.5 }} // Initial animation for this div
+              animate={{ scale: 1 }} // Animation when component is visible
+              transition={{ duration: 0.5, delay: 0.2 }} // Animation duration with a delay
+      
+      >
         <h1 className="text-center p-4 text-2xl font-semibold ">All My Jobs</h1>
         <div className="search-box p-2 text-center mb-2">
           <input
@@ -83,7 +93,7 @@ const MyJobs = () => {
             Search
           </button>
         </div>
-      </div>
+      </motion.div>
 
       {/* Table */}
       <section className="py-1 bg-blueGray-50">
@@ -193,7 +203,7 @@ const MyJobs = () => {
           )}
         </div>
       </section>
-    </div>
+    </motion.div>
   );
 };
 

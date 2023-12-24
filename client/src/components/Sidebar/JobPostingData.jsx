@@ -25,8 +25,8 @@
           <label className="sidebar-label-container">
             <input
               type="radio"
-              name="test"
-              id="test"
+              name="postingDate"
+              id="postingDate"
               value=""
               onChange={handleChange}
             />
@@ -37,21 +37,21 @@
             handleChange={handleChange}
             value={twentyfourHoursAgoDate}
             title="Last 24 Hours"
-            name="test"
+            name="postingDate"
           />
 
           <InputField
             handleChange={handleChange}
             value={sevenDaysAgoDate}
             title="Last 7 Days"
-            name="test"
+            name="postingDate"
           />
 
           <InputField
             handleChange={handleChange}
             value={thirtyDaysAgoDate}
             title="Last Month"
-            name="test"
+            name="postingDate"
           />
 
         </div>

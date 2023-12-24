@@ -2,6 +2,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { useRef, useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { MdModeEditOutline } from "react-icons/md";
+import { motion } from 'framer-motion';
+
 
 import {
   getDownloadURL,
@@ -174,13 +176,25 @@ export default function Profile() {
   };
 
   return (
-    <div
+    <motion.div
+    initial={{y: 50 }}
+    animate={{ y: 0 }}
+    exit={{y: -50 }}
+    transition={{ duration: 0.5 }}
       className={`flex items-center justify-center min-h-screen  ${
-        theme.darkMode ? "dark:bg-slate-700 text-white" : ""
+        theme.darkMode ? "dark:bg-slate-700 text-white" : "bg-neutral-200"
       }`}
     >
-      <div className="p-8 max-w-md w-full">
-        <h1 className="text-4xl font-semibold text-center mb-4">Profile</h1>
+      <motion.div
+       initial={{scale: 0.5 }}
+       animate={{ scale: 1 }}
+       transition={{ duration: 0.5 }}
+      className="p-8 max-w-md w-full">
+        <motion.h1
+        initial={{y: -20 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        className="text-4xl font-semibold text-center mb-4">Profile</motion.h1>
 
         <form
           onSubmit={handleSubmit}
@@ -307,7 +321,7 @@ export default function Profile() {
 
         {/* Display error messages */}
         <p className="text-slate-500 mt-5">{error ? error : ""}</p>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }

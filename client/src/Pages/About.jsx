@@ -6,22 +6,18 @@ import { useSelector } from "react-redux";
 export default function Jobs() {
   const theme = useSelector((state) => state.theme);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { duration: 1 } },
-  };
+
 
   const textVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 1, delay: 0.5 } },
+    hidden: {  y: 20 },
+    visible: {  y: 0, transition: { duration: 1, delay: 0.5 } },
   };
 
   return (
     <motion.div
       className={`py-12 sm:py-20 px-6 sm:px-12 md:px-24 lg:px-32 xl:px-40   ${
-        theme.darkMode ? "dark:bg-slate-700 text-white" : "bg-gray-100"
+        theme.darkMode ? "dark:bg-slate-800 text-white" : "bg-gray-100"
       }`}
-      variants={containerVariants}
       initial="hidden"
       animate="visible"
     >
