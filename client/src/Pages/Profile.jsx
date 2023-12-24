@@ -2,8 +2,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useRef, useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { MdModeEditOutline } from "react-icons/md";
-import { motion } from 'framer-motion';
-
+import { motion } from "framer-motion";
 
 import {
   getDownloadURL,
@@ -177,24 +176,28 @@ export default function Profile() {
 
   return (
     <motion.div
-    initial={{y: 50 }}
-    animate={{ y: 0 }}
-    exit={{y: -50 }}
-    transition={{ duration: 0.5 }}
+      initial={{ y: 50 }}
+      animate={{ y: 0 }}
+      exit={{ y: -50 }}
+      transition={{ duration: 0.5 }}
       className={`flex items-center justify-center min-h-screen  ${
         theme.darkMode ? "dark:bg-slate-700 text-white" : "bg-neutral-200"
       }`}
     >
       <motion.div
-       initial={{scale: 0.5 }}
-       animate={{ scale: 1 }}
-       transition={{ duration: 0.5 }}
-      className="p-8 max-w-md w-full">
+        initial={{ scale: 0.5 }}
+        animate={{ scale: 1 }}
+        transition={{ duration: 0.5 }}
+        className="p-8 max-w-md w-full"
+      >
         <motion.h1
-        initial={{y: -20 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-        className="text-4xl font-semibold text-center mb-4">Profile</motion.h1>
+          initial={{ y: -20 }}
+          animate={{ y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="text-4xl font-semibold text-center mb-4"
+        >
+          Profile
+        </motion.h1>
 
         <form
           onSubmit={handleSubmit}
@@ -298,9 +301,14 @@ export default function Profile() {
               className="border p-3   text-black  rounded-lg w-full"
               onChange={handleChange}
             />
-          </div>
 
-         
+            <button
+              disabled={loading}
+              className="bg-slate-500 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80"
+            >
+              {loading ? "Loading..." : "Update"}
+            </button>
+          </div>
         </form>
 
         {/* Sign out and Delete account button  */}

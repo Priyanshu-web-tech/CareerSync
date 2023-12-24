@@ -56,7 +56,11 @@ const MyJobs = () => {
       .then((data) => {
         if (data.acknowledged === true) {
           setJobs((prevJobs) => prevJobs.filter((job) => job._id !== id));
-          Swal.fire(`Job Deleted successfullly`);
+          Swal.fire({
+            text:"Job Deleted successfullly",
+            background: `${theme.darkMode ? "#1e293b" : ""}`,
+            color: `${theme.darkMode ? "white" : ""}`,
+           } );
         }
       });
   };
