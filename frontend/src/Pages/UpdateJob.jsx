@@ -6,8 +6,6 @@ import Swal from "sweetalert2";
 import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
 
-
-
 const UpdateJob = () => {
   const theme = useSelector((state) => state.theme);
   const { id } = useParams();
@@ -44,7 +42,7 @@ const UpdateJob = () => {
       // Retain the existing skills data in 'data' object
       data.skills = skills;
     }
-  
+
     fetch(`/api/job/update-job/${id}`, {
       method: "PATCH",
       headers: { "content-type": "application/json" },
@@ -53,13 +51,12 @@ const UpdateJob = () => {
       .then((res) => res.json())
       .then((result) => {
         if (result.acknowledged === true) {
-          Swal.fire(  {
+          Swal.fire({
             text: "Job Updated Successfully",
             confirmButtonColor: "teal",
             background: `${theme.darkMode ? "#1e293b" : ""}`,
             color: `${theme.darkMode ? "white" : ""}`,
-          }
-        );
+          });
         }
         reset({});
       });
@@ -78,15 +75,18 @@ const UpdateJob = () => {
   ];
   return (
     <motion.div
-    initial={{  y: -20 }}
-    animate={{  y: 0 }}
-    className={`max-w-screen-2xl container mx-auto xl:px-24 px-4 p-3 ${
-      theme.darkMode ? "dark:bg-slate-800 text-white" : ""
-    }`}>
+      initial={{ y: -20 }}
+      animate={{ y: 0 }}
+      className={`max-w-screen-2xl container mx-auto xl:px-24 px-4 p-3 ${
+        theme.darkMode ? "dark:bg-slate-800 text-white" : ""
+      }`}
+    >
       {/* form */}
-      <div className={` py-10 px-4 lg:px-16 ${
-        theme.darkMode ? "dark:bg-slate-700" : "bg-[#FAFAFA]"
-      }`}>
+      <div
+        className={` py-10 px-4 lg:px-16 ${
+          theme.darkMode ? "dark:bg-slate-700" : "bg-[#FAFAFA]"
+        }`}
+      >
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           {/* 1st row */}
           <div className="create-job-flex">
@@ -219,19 +219,17 @@ const UpdateJob = () => {
           <div>
             <label className="block mb-2 text-lg">Required Skill Sets:</label>
 
-           <CreatableSelect
+            <CreatableSelect
               defaultValue={skills}
               onChange={setSelectedOption}
               options={options}
               isMulti
               className="create-job-input"
-  
               required
               styles={{
                 control: (provided) => ({
                   ...provided,
-                  backgroundColor: theme.darkMode ? "#2D3748" : "white", 
-                  
+                  backgroundColor: theme.darkMode ? "#2D3748" : "white",
                 }),
                 menu: (provided) => ({
                   ...provided,
@@ -240,18 +238,22 @@ const UpdateJob = () => {
                 option: (provided, state) => ({
                   ...provided,
                   backgroundColor: state.isSelected
-                    ? (theme.darkMode ? "#4A5568" : "#D1D5DB") 
-                    : (theme.darkMode ? "#2D3748" : "white"), 
+                    ? theme.darkMode
+                      ? "#4A5568"
+                      : "#D1D5DB"
+                    : theme.darkMode
+                    ? "#2D3748"
+                    : "white",
                 }),
                 multiValue: (provided) => ({
                   ...provided,
-                  backgroundColor: theme.darkMode ? "#4A5568" : "#D1D5DB", 
-                  color: theme.darkMode ? "white" : "black", 
+                  backgroundColor: theme.darkMode ? "#4A5568" : "#D1D5DB",
+                  color: theme.darkMode ? "white" : "black",
                 }),
 
                 multiValueLabel: (provided) => ({
                   ...provided,
-                  color: theme.darkMode ? "white" : "black", 
+                  color: theme.darkMode ? "white" : "black",
                 }),
               }}
             />
