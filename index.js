@@ -19,7 +19,7 @@ mongoose
     console.log(err);
   });
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
@@ -33,16 +33,6 @@ const __dirname = path.resolve();
 app.use(express.static(path.join(__dirname, "/frontend/dist")));
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
-});
-
-app.use((err, req, res, next) => {
-  const statusCode = err.statusCode || 500;
-  const message = err.message || "Internal Server Error";
-  return res.status(statusCode).json({
-    success: false,
-    statusCode,
-    message,
-  });
 });
 
 app.listen(port, () => {
