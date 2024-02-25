@@ -16,7 +16,7 @@ const MyJobs = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    fetch(`/api/job/myJobs/${currentUser.email}`)
+    fetch(`${window.location.origin}/api/job/myJobs/${currentUser.email}`)
       .then((res) => res.json())
       .then((data) => {
         setJobs(data);
@@ -49,7 +49,7 @@ const MyJobs = () => {
   };
 
   const handleDelete = (id) => {
-    fetch(`/api/job/delete/${id}`, {
+    fetch(`${window.location.origin}/api/job/delete/${id}`, {
       method: "DELETE",
     })
       .then((res) => res.json())

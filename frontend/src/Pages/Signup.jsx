@@ -32,7 +32,7 @@ export default function SignUp() {
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await fetch("/api/auth/signup", {
+      const res = await fetch(`${window.location.origin}/api/auth/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -54,7 +54,7 @@ export default function SignUp() {
       try {
         dispatch(signInStart());
 
-        const res = await fetch("/api/auth/signin", {
+        const res = await fetch(`${window.location.origin}/api/auth/signin`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

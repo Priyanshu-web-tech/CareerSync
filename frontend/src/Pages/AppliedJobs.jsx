@@ -16,7 +16,7 @@ const AppliedJobs = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    fetch(`/api/apply/appliedJobs/${currentUser._id}`)
+    fetch(`${window.location.origin}/api/apply/appliedJobs/${currentUser._id}`)
       .then((res) => res.json())
       .then((data) => {
         setApplied(data);
@@ -25,7 +25,7 @@ const AppliedJobs = () => {
   }, [currentUser._id]);
 
   useEffect(() => {
-    fetch("/api/job/all-jobs")
+    fetch(`${window.location.origin}/api/job/all-jobs`)
       .then((res) => res.json())
       .then((data) => setJobs(data));
   }, []);

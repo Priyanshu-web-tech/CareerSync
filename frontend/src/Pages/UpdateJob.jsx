@@ -43,7 +43,7 @@ const UpdateJob = () => {
       data.skills = skills;
     }
 
-    fetch(`/api/job/update-job/${id}`, {
+    fetch(`${window.location.origin}/api/job/update-job/${id}`, {
       method: "PATCH",
       headers: { "content-type": "application/json" },
       body: JSON.stringify(data),

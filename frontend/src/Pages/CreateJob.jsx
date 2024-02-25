@@ -22,7 +22,7 @@ const CreateJob = () => {
   const onSubmit = (data) => {
     data.skills = selectedOption;
     data.postedBy = currentUser.email;
-    fetch("/api/job/post-job", {
+    fetch(`${window.location.origin}/api/job/post-job`, {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify(data),

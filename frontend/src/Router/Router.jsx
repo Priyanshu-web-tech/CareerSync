@@ -54,7 +54,7 @@ const router = createBrowserRouter([
           {
             path: "/edit-job/:id",
             element: <UpdateJob />,
-            loader: ({ params }) => fetch(`/api/job/all-jobs/${params.id}`),
+            loader: ({ params }) => fetch(`${window.location.origin}/api/job/all-jobs/${params.id}`),
           },
           {
             path: "/my-job",

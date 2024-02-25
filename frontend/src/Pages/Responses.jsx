@@ -17,7 +17,7 @@ const Responses = () => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    fetch("/api/user/get-users")
+    fetch(`${window.location.origin}/api/user/get-users`)
       .then((res) => res.json())
       .then((data) => setUsers(data));
   }, []);

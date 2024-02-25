@@ -22,14 +22,14 @@ const JobDetails = () => {
   const { currentUser, loading, error } = useSelector((state) => state.user);
 
   useEffect(() => {
-    fetch(`/api/job/all-jobs/${id}`)
+    fetch(`${window.location.origin}/api/job/all-jobs/${id}`)
       .then((res) => res.json())
       .then((data) => setJob(data));
   }, [id]);
 
   if(currentUser){
   useEffect(() => {
-    fetch(`/api/apply/appliedJobs/${currentUser._id}`)
+    fetch(`${window.location.origin}/api/apply/appliedJobs/${currentUser._id}`)
       .then((res) => res.json())
       .then((data) => setApplied(data));
   }, [currentUser._id]);
@@ -69,7 +69,7 @@ const JobDetails = () => {
     }
 
 
-    fetch("/api/apply/apply-job", {
+    fetch(`${window.location.origin}/api/apply/apply-job`, {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify(application),
