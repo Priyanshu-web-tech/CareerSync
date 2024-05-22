@@ -32,11 +32,20 @@ export const signin = async (req, res, next) => {
       return next(errorHandler(401, "Wrong Creds!"));
     }
 
-    const token = jwt.sign({ id: validUser._id }, "mern");
+    const token = jwt.sign({ id: validUser._id }, process.env.JWT_KEY);
 
     const { password: pass, ...rest } = validUser._doc;
-    res.cookie("access_token", token, { httpOnly: true }).status(200).json(rest);
+    const expirationDate = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000);
 
+    res
+      .cookie("access_token", token, {
+        sameSite: "none",
+        secure: true,
+        expires: expirationDate, // Set expiration time
+        httpOnly: true,
+      })
+      .status(200)
+      .json(rest);
   } catch (e) {
     next(e);
   }
@@ -46,7 +55,7 @@ export const google = async (req, res, next) => {
   try {
     const user = await User.findOne({ email: req.body.email });
     if (user) {
-      const token = jwt.sign({ id: user._id }, "mern");
+      const token = jwt.sign({ id: user._id }, process.env.JWT_KEY);
       const { password: pass, ...rest } = user._doc;
       res
         .cookie("access_token", token, { httpOnly: true })
@@ -68,10 +77,17 @@ export const google = async (req, res, next) => {
         avatar: req.body.photo,
       });
       await newUser.save();
-      const token = jwt.sign({ id: newUser._id }, "mern");
+      const token = jwt.sign({ id: newUser._id }, process.env.JWT_KEY);
       const { password: pass, ...rest } = newUser._doc;
+      const expirationDate = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000);
+
       res
-        .cookie("access_token", token, { httpOnly: true })
+        .cookie("access_token", token, {
+          sameSite: "none",
+          secure: true,
+          expires: expirationDate, // Set expiration time
+          httpOnly: true,
+        })
         .status(200)
         .json(rest);
     }

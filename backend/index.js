@@ -7,7 +7,6 @@ import userRouter from "./routes/user.route.js";
 import authRouter from "./routes/auth.route.js";
 import applyRouter from "./routes/apply.route.js";
 import cookieParser from "cookie-parser";
-import path from "path";
 
 dotenv.config();
 const PORT = process.env.PORT || 3001;
@@ -24,17 +23,17 @@ mongoose
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.CLIENT_ORIGIN,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    credentials: true,
+  })
+);
 app.use("/api/job", jobRouter);
 app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/apply", applyRouter);
-
-const __dirname = path.resolve();
-app.use(express.static(path.join(__dirname, "/frontend/dist")));
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
-});
 
 app.listen(PORT, () => {
   console.log(`Server Running ${PORT}`);

@@ -5,6 +5,8 @@ import CreatableSelect from "react-select/creatable";
 import Swal from "sweetalert2";
 import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
+import axios from 'axios';
+
 
 const UpdateJob = () => {
   const theme = useSelector((state) => state.theme);
@@ -43,14 +45,9 @@ const UpdateJob = () => {
       data.skills = skills;
     }
 
-    fetch(`${window.location.origin}/api/job/update-job/${id}`, {
-      method: "PATCH",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(data),
-    })
-      .then((res) => res.json())
-      .then((result) => {
-        if (result.acknowledged === true) {
+    axios.patch(`/api/job/update-job/${id}`, data)
+      .then((response) => {
+        if (response.data.acknowledged === true) {
           Swal.fire({
             text: "Job Updated Successfully",
             confirmButtonColor: "teal",
@@ -59,6 +56,9 @@ const UpdateJob = () => {
           });
         }
         reset({});
+      })
+      .catch((error) => {
+        console.error("Error updating job:", error);
       });
   };
 

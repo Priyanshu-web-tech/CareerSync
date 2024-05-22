@@ -1,4 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
+import axios from 'axios';
 import { useRef, useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { MdModeEditOutline } from "react-icons/md";
@@ -75,19 +76,20 @@ export default function Profile() {
     e.preventDefault();
     try {
       dispatch(updateUserStart());
-      const res = await fetch(`${window.location.origin}/api/user/update/${currentUser._id}`, {
-        method: "POST",
+  
+      const res = await axios.post(`/api/user/update/${currentUser._id}`, formData, {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
       });
-      const data = await res.json();
+  
+      const data = res.data;
+  
       if (data.success === false) {
         dispatch(updateUserFailure(data.message));
         return;
       }
-
+  
       dispatch(updateUserSuccess(data));
       setUpdateSuccess(true);
       Swal.fire({
@@ -106,6 +108,7 @@ export default function Profile() {
       });
     }
   };
+  
 
   const handleDeleteUser = () => {
     Swal.fire({
@@ -122,10 +125,11 @@ export default function Profile() {
       if (result.isConfirmed) {
         try {
           dispatch(deleteUserStart());
-          const res = await fetch(`${window.location.origin}/api/user/delete/${currentUser._id}`, {
-            method: "DELETE",
-          });
-          const data = await res.json();
+  
+          const res = await axios.delete(`/api/user/delete/${currentUser._id}`);
+  
+          const data = res.data;
+  
           if (data.success === false) {
             dispatch(deleteUserFailure(data.message));
             Swal.fire({
@@ -137,6 +141,7 @@ export default function Profile() {
             });
             return;
           }
+  
           dispatch(deleteUserSuccess(data));
           Swal.fire({
             icon: "success",
@@ -158,21 +163,27 @@ export default function Profile() {
       }
     });
   };
+  
 
   const handleSignOut = async () => {
     try {
       dispatch(signOutUserStart());
-      const res = await fetch(`${window.location.origin}/api/auth/signout`);
-      const data = await res.json();
+  
+      const res = await axios.post(`/api/auth/signout`);
+  
+      const data = res.data;
+  
       if (data.success === false) {
         dispatch(signOutUserFailure(data.message));
         return;
       }
+  
       dispatch(signOutUserSuccess(data));
     } catch (error) {
-      dispatch(signOutUserFailure(data.message));
+      dispatch(signOutUserFailure(error.message));
     }
   };
+  
 
   return (
     <motion.div

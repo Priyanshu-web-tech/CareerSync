@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import PageHeader from "../components/PageHeader";
 import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
-
+import axios from "axios";
 
 import TableSkeleton from "../skeletonComponents/TableSkeleton";
 
@@ -17,25 +17,30 @@ const Responses = () => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    fetch(`${window.location.origin}/api/user/get-users`)
-      .then((res) => res.json())
-      .then((data) => setUsers(data));
+    axios
+      .get(`/api/user/get-users`)
+      .then((res) => setUsers(res.data))
+      .catch((error) => console.error("Error fetching users:", error));
   }, []);
 
   useEffect(() => {
     setIsLoading(true);
-    fetch("/api/apply/appliedJobs")
-      .then((res) => res.json())
-      .then((data) => {
-        setApplied(data);
+    axios
+      .get(`/api/apply/appliedJobs`)
+      .then((res) => {
+        setApplied(res.data);
         setIsLoading(false);
-      });
+      })
+      .catch((error) => console.error("Error fetching applied jobs:", error));
   }, [currentUser._id]);
 
   useEffect(() => {
-    fetch(`/api/job/myJobs/${currentUser.email}`)
-      .then((res) => res.json())
-      .then((data) => setJobs(data));
+    axios
+      .get(
+        `/api/job/myJobs/${currentUser.email}`
+      )
+      .then((res) => setJobs(res.data))
+      .catch((error) => console.error("Error fetching user jobs:", error));
   }, []);
 
   // Filter applied jobs
@@ -48,7 +53,6 @@ const Responses = () => {
       return null; // If matchingJob is undefined, return null or handle it accordingly
     })
     .filter(Boolean);
-
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -65,9 +69,9 @@ const Responses = () => {
 
   return (
     <motion.div
-    initial={{  y: -50 }}
-      animate={{  y: 0 }}
-      exit={{  y: -50 }}
+      initial={{ y: -50 }}
+      animate={{ y: 0 }}
+      exit={{ y: -50 }}
       transition={{ duration: 0.5 }}
       className={`max-w-screen-2xl container mx-auto xl:px-24 px-4 p-3 min-h-screen ${
         theme.darkMode ? "dark:bg-slate-700 text-neutral-200" : ""
@@ -95,7 +99,7 @@ const Responses = () => {
 
             <div className="block w-full overflow-x-auto">
               {isloading ? (
-                <TableSkeleton/>
+                <TableSkeleton />
               ) : (
                 <table className="items-center bg-transparent w-full border-collapse ">
                   <thead>

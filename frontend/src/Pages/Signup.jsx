@@ -1,4 +1,5 @@
 import { useState } from "react";
+import axios from 'axios';
 import { Link, useNavigate } from "react-router-dom";
 import OAuth from "../components/OAuth";
 import { useDispatch, useSelector } from "react-redux";
@@ -32,47 +33,50 @@ export default function SignUp() {
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await fetch(`${window.location.origin}/api/auth/signup`, {
-        method: "POST",
+  
+      // Sign Up Request
+      const res = await axios.post(`/api/auth/signup`, formData, {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
       });
-      const data = await res.json();
-
+  
+      const data = res.data;
+  
       if (data.success === false) {
         setLoading(false);
         setError(data.message);
         return;
       }
+  
       setLoading(false);
       setError(null);
+  
       signInData.email = formData.email;
       signInData.password = formData.password;
-
+  
       try {
         dispatch(signInStart());
-
-        const res = await fetch(`${window.location.origin}/api/auth/signin`, {
-          method: "POST",
+  
+        // Sign In Request
+        const res = await axios.post(`/api/auth/signin`, signInData, {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(signInData),
         });
-        const data = await res.json();
-
+  
+        const data = res.data;
+  
         if (data.success === false) {
           dispatch(signInFailure(data.message));
           return;
         }
-
+  
         dispatch(signInSuccess(data));
-
+  
         navigate("/");
       } catch (error) {
-        dispatch(signInFailure(data.message));
+        dispatch(signInFailure(error.response?.data?.message || error.message));
         navigate("/sign-in");
       }
     } catch (error) {
@@ -80,6 +84,7 @@ export default function SignUp() {
       setError(error.message);
     }
   };
+  
   return (
     <div
       className={`flex items-center justify-center min-h-screen ${

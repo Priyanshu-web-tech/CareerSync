@@ -13,6 +13,8 @@ import {
   FaSuitcase,
   FaCheck,
 } from "react-icons/fa";
+import axios from 'axios';
+
 
 const JobDetails = () => {
   const theme = useSelector((state) => state.theme);
@@ -22,37 +24,33 @@ const JobDetails = () => {
   const { currentUser, loading, error } = useSelector((state) => state.user);
 
   useEffect(() => {
-    fetch(`${window.location.origin}/api/job/all-jobs/${id}`)
-      .then((res) => res.json())
-      .then((data) => setJob(data));
+    axios.get(`/api/job/all-jobs/${id}`)
+      .then((response) => setJob(response.data))
+      .catch((error) => console.error("Error fetching job details:", error));
   }, [id]);
-
   if(currentUser){
+
   useEffect(() => {
-    fetch(`${window.location.origin}/api/apply/appliedJobs/${currentUser._id}`)
-      .then((res) => res.json())
-      .then((data) => setApplied(data));
-  }, [currentUser._id]);
+    if(currentUser) {
+      axios.get(`/api/apply/appliedJobs/${currentUser._id}`)
+        .then((response) => setApplied(response.data))
+        .catch((error) => console.error("Error fetching applied jobs:", error));
+    }
+  }, [currentUser]);}
 
-}
-
-  const isAlreadyApplied = applied.some(
-    (application) => application.job === id
-  );
+  const isAlreadyApplied = applied.some((application) => application.job === id);
 
   const handleApply = async () => {
-
-    if(!currentUser)
-    {
+    if (!currentUser) {
       Swal.fire({
         text: "Sign in to apply for jobs",
         confirmButtonColor: "teal",
         background: `${theme.darkMode ? "#1e293b" : ""}`,
         color: `${theme.darkMode ? "white" : ""}`,
       });
-
-      return ;
+      return;
     }
+
     const application = {
       user: currentUser._id,
       job: id,
@@ -65,29 +63,22 @@ const JobDetails = () => {
         background: `${theme.darkMode ? "#1e293b" : ""}`,
         color: `${theme.darkMode ? "white" : ""}`,
       });
-      return; // Exit the function
+      return;
     }
 
-
-    fetch(`${window.location.origin}/api/apply/apply-job`, {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(application),
-    })
-      .then((res) => res.json())
-      .then((result) => {
-        if (result.acknowledged === true) {
-          Swal.fire({
-            text: "Applied Successfully",
-            confirmButtonColor: "teal",
-            background: `${theme.darkMode ? "#1e293b" : ""}`,
-            color: `${theme.darkMode ? "white" : ""}`,
-          });
-        }
-      })
-      .catch((error) => {
-        console.error("Error applying for job:", error);
-      });
+    try {
+      const response = await axios.post(`/api/apply/apply-job`, application);
+      if (response.data.acknowledged === true) {
+        Swal.fire({
+          text: "Applied Successfully",
+          confirmButtonColor: "teal",
+          background: `${theme.darkMode ? "#1e293b" : ""}`,
+          color: `${theme.darkMode ? "white" : ""}`,
+        });
+      }
+    } catch (error) {
+      console.error("Error applying for job:", error);
+    }
   };
 
   const disabledButtonStyle = {

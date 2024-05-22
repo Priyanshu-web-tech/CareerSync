@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Swal from "sweetalert2";
 import { useSelector } from "react-redux";
 import TableSkeleton from "../skeletonComponents/TableSkeleton";
+import axios from 'axios';
 
 const MyJobs = () => {
   const [jobs, setJobs] = useState([]);
@@ -16,12 +17,12 @@ const MyJobs = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    fetch(`${window.location.origin}/api/job/myJobs/${currentUser.email}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setJobs(data);
+    axios.get(`/api/job/myJobs/${currentUser.email}`)
+      .then((response) => {
+        setJobs(response.data);
         setIsLoading(false);
-      });
+      })
+      .catch((error) => console.error("Error fetching jobs:", error));
   }, [searchText]);
 
   //   pagination
@@ -49,20 +50,18 @@ const MyJobs = () => {
   };
 
   const handleDelete = (id) => {
-    fetch(`${window.location.origin}/api/job/delete/${id}`, {
-      method: "DELETE",
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.acknowledged === true) {
+    axios.delete(`/api/job/delete/${id}`)
+      .then((response) => {
+        if (response.data.acknowledged === true) {
           setJobs((prevJobs) => prevJobs.filter((job) => job._id !== id));
           Swal.fire({
-            text:"Job Deleted successfullly",
+            text:"Job Deleted successfully",
             background: `${theme.darkMode ? "#1e293b" : ""}`,
             color: `${theme.darkMode ? "white" : ""}`,
-           } );
+          });
         }
-      });
+      })
+      .catch((error) => console.error("Error deleting job:", error));
   };
   return (
     <motion.div

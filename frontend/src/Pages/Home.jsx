@@ -6,6 +6,7 @@ import Sidebar from "../components/Sidebar/Sidebar";
 import { useSelector } from "react-redux";
 import CardSkeleton from "../skeletonComponents/CardSkeleton";
 import Accordion from "../components/Accordion";
+import axios from "axios";
 
 const Home = () => {
   const theme = useSelector((state) => state.theme);
@@ -16,13 +17,20 @@ const Home = () => {
   const itemsPerPage = 6;
 
   useEffect(() => {
-    setIsLoading(true);
-    fetch(`${window.location.origin}/api/job/all-jobs`)
-      .then((res) => res.json())
-      .then((data) => {
+    const fetchJobs = async () => {
+      setIsLoading(true);
+      try {
+        const { data } = await axios.get(
+          `/api/job/all-jobs`
+        );
         setJobs(data);
+      } catch (error) {
+        console.error("Error fetching jobs data:", error);
+      } finally {
         setIsLoading(false);
-      });
+      }
+    };
+    fetchJobs();
   }, []);
 
   // handle input change
@@ -36,12 +44,12 @@ const Home = () => {
     (job) => job.jobTitle.toLowerCase().indexOf(query.toLowerCase()) !== -1
   );
 
-  // -------------------Radio-----------
+  // Radio button handler
   const handleChange = (event) => {
     setSelectedCategory(event.target.value);
   };
 
-  // -----------Button filtering------
+  // Button click handler
   const handleClick = (event) => {
     setSelectedCategory(event.target.value);
   };
@@ -49,9 +57,7 @@ const Home = () => {
   // Calculate the index range
   const calculatePageRange = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
-
     const endIndex = startIndex + itemsPerPage;
-
     return { startIndex, endIndex };
   };
 

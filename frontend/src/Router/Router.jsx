@@ -1,4 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
+import axios from "axios";
 import App from "../App";
 import Home from "../Pages/Home";
 import CreateJob from "../Pages/CreateJob";
@@ -22,7 +23,6 @@ const router = createBrowserRouter([
         path: "/",
         element: <Home />,
       },
-
       {
         path: "/job/:id",
         element: <JobDetails />,
@@ -54,7 +54,10 @@ const router = createBrowserRouter([
           {
             path: "/edit-job/:id",
             element: <UpdateJob />,
-            loader: ({ params }) => fetch(`${window.location.origin}/api/job/all-jobs/${params.id}`),
+            loader: async ({ params }) => {
+              const response = await axios.get(`/api/job/all-jobs/${params.id}`);
+              return response.data;
+            },
           },
           {
             path: "/my-job",

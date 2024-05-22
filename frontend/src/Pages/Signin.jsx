@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import axios from 'axios';
+
 import { Link, useNavigate } from "react-router-dom";
 import { RiEyeFill, RiEyeOffFill } from "react-icons/ri"; // Import icons from React Icons
 
@@ -36,28 +38,28 @@ export default function SignIn() {
     e.preventDefault();
     try {
       dispatch(signInStart());
-
-      const res = await fetch(`${window.location.origin}/api/auth/signin`, {
-        method: "POST",
+  
+      const res = await axios.post(`/api/auth/signin`, formData, {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
       });
-      const data = await res.json();
-
+  
+      const data = res.data;
+  
       if (data.success === false) {
         dispatch(signInFailure(data.message));
         return;
       }
-
+  
       dispatch(signInSuccess(data));
-
+  
       navigate("/");
     } catch (error) {
-      dispatch(signInFailure(data.message));
+      dispatch(signInFailure(error.response?.data?.message || error.message));
     }
   };
+  
 
   const clearErrorMessage = () => {
     dispatch(clearError());

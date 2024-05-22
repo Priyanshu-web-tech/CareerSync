@@ -4,6 +4,8 @@ import CreatableSelect from "react-select/creatable";
 import Swal from "sweetalert2";
 import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
+import axios from 'axios';
+
 
 
 const CreateJob = () => {
@@ -19,29 +21,28 @@ const CreateJob = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
+ // onSubmit function using axios
+ const onSubmit = async (data) => {
+  try {
     data.skills = selectedOption;
     data.postedBy = currentUser.email;
-    fetch(`${window.location.origin}/api/job/post-job`, {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(data),
-    })
-      .then((res) => res.json())
-      .then((result) => {
-        if (result.acknowledged === true) {
-          Swal.fire(  {
-            text: "Job Created Successfully",
-            confirmButtonColor: "teal",
-            background: `${theme.darkMode ? "#1e293b" : ""}`,
-            color: `${theme.darkMode ? "white" : ""}`,
-          }
-        );
-        }
-        reset();
-      });
-  };
 
+    const response = await axios.post(`/api/job/post-job`, data);
+
+    if (response.data.acknowledged === true) {
+      Swal.fire({
+        text: "Job Created Successfully",
+        confirmButtonColor: "teal",
+        background: `${theme.darkMode ? "#1e293b" : ""}`,
+        color: `${theme.darkMode ? "white" : ""}`,
+      });
+    }
+
+    reset(); // Reset the form after successful submission
+  } catch (error) {
+    console.error("Error creating job:", error);
+  }
+};
   const options = [
     { value: "JavaScript", label: "JavaScript" },
     { value: "C++", label: "C++" },
