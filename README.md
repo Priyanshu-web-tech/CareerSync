@@ -12,7 +12,7 @@ https://career-sync-gamma.vercel.app
 Clone the project
 
 ```bash
-  git clone https://github.com/Priyanshu-web-tech/Clinic-Management-System.git
+  git clone https://github.com/Priyanshu-web-tech/CareerSync.git
 ```
 
 Go to the project directory
@@ -22,10 +22,10 @@ Go to the project directory
 ```
 ### Backend Setup
 
-Go to the Backend directory
+Go to the backend directory
 
 ```bash
-  cd Backend
+  cd backend
 ```
 
 Install dependencies
@@ -50,10 +50,10 @@ Start the server
 ```
 ### Frontend Setup
 
-Go to the Frontend directory
+Go to the frontend directory
 
 ```bash
-  cd Frontend
+  cd frontend
 ```
 
 Install dependencies
